@@ -24,8 +24,8 @@
   display: none;
 }
 .video-container svg {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
 
 .video-container {
@@ -227,7 +227,11 @@
   display: flex;
   gap: 4px;
   align-items: center;
-  font-family: 16px ;
+  font-size: 100%;
+  vertical-align: top;
+  padding: 0 0px 0 4px;
+  white-space: nowrap;
+  line-height: 47px;
 }
 .mini-player-btn {
   display: none;
@@ -236,9 +240,9 @@
   display: none;
 }
 .video-container .m-settings-btn {
-  top: 10px;
+  top: 20px;
   position: absolute;
-  right: 10px;
+  right: 20px;
   background: none;
   border: none;
 }

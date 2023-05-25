@@ -120,6 +120,8 @@ function toggleFullScreen() {
     MSettingsBtn.style.top = '20px'
     MSettingsBtn.style.right = '20px'
     if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
+      console.log('object');
+    } else {
       screen.orientation.lock('landscape');
     }
   } else {

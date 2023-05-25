@@ -21,7 +21,7 @@ function handleInputChange(e) {
 rangeInputs.forEach(input => {
   input.addEventListener('input', handleInputChange)
 })
-
+const MSettingsBtn = document.querySelector('.video-container .m-settings-btn')
 const video = document.querySelector('.video-container video')
 const playPausebtn = document.querySelector('.video-container .play-pause-btn')
 const FullScreenBtn = document.querySelector('.video-container .full-screen-btn')
@@ -117,8 +117,12 @@ FullScreenBtn.addEventListener('click', () => {
 function toggleFullScreen() {
   if (document.fullscreenElement == null) {
     videoContainer.requestFullscreen()
+    MSettingsBtn.style.top = '20px'
+    MSettingsBtn.style.right = '20px'
   } else {
     document.exitFullscreen()
+    MSettingsBtn.style.top = '10px'
+    MSettingsBtn.style.right = '10px'
   }
 }
 
@@ -183,3 +187,9 @@ function FormatTime(time) {
     return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
   }
 }
+
+
+
+
+
+

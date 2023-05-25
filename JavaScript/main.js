@@ -31,7 +31,19 @@ const volumeSlider = document.querySelector('.video-container .volume-slider')
 const MuteBtn = document.querySelector('.video-container .mute-btn')
 const TotalTime = document.querySelector('.video-container .total-time')
 const CurrentTime = document.querySelector('.video-container .current-time')
+let buttons = document.querySelectorAll('button')
+let inputs = document.querySelectorAll('input')
 
+for(let i =0 ; i < buttons.length ; i++) {
+  buttons[i].onfocus = function () {
+    buttons[i].blur()
+  }
+}
+for(let i =0 ; i < inputs.length ; i++) {
+  inputs[i].onfocus = function () {
+    inputs[i].blur()
+  }
+}
 
 const videoContainer = document.querySelector('.video-container')
 
@@ -77,6 +89,12 @@ videoContainer.addEventListener('click', (e) => {
   if (e.target.toString() == "[object HTMLVideoElement]") {
     playPause()
   }
+})
+videoContainer.addEventListener('dblclick', (e) => {
+  if (e.target.toString() == "[object HTMLVideoElement]") {
+    toggleFullScreen()
+  }
+  console.log('object');
 })
 playPausebtn.addEventListener('focus', () => {
   setTimeout(() => {

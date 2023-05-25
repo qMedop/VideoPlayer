@@ -122,7 +122,6 @@ function toggleFullScreen() {
     if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
       screen.orientation.lock('landscape');
     }
-    screen.orientation.lock('landscape');
   } else {
     document.exitFullscreen()
     MSettingsBtn.style.top = '15px'

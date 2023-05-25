@@ -233,7 +233,11 @@ height: 28px;
   display: flex;
   gap: 4px;
   align-items: center;
-  font-family: 16px ;
+  font-size: 100%;
+  vertical-align: top;
+  padding: 0 0px 0 4px;
+  white-space: nowrap;
+  line-height: 47px;
 }
 @media (max-width: 480px) {
   .video-container svg {

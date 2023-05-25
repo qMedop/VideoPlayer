@@ -221,13 +221,12 @@
   display: none;
 }
 
-
 .video-container .duration-container {
   flex-grow: 1;
   display: flex;
   gap: 4px;
   align-items: center;
-  font-size: 100%;
+  font-size: 70%;
   vertical-align: top;
   padding: 0 0px 0 4px;
   white-space: nowrap;
@@ -240,9 +239,9 @@
   display: none;
 }
 .video-container .m-settings-btn {
-  top: 20px;
+  top: 10px;
   position: absolute;
-  right: 20px;
+  right: 10px;
   background: none;
   border: none;
 }

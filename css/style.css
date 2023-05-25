@@ -108,9 +108,9 @@ height: 28px;
   -ms-transition: opacity 150ms ease-in-out;
   -o-transition: opacity 150ms ease-in-out;
 }
-.video-container .controls-container .controls button:focus {
+/* .video-container .controls-container .controls button:focus {
   outline: none;
-}
+} */
 .video-container .controls-container .controls button:hover {
   opacity: 1;
 }
@@ -247,4 +247,7 @@ height: 28px;
     gap: 2px;
     font-size: 14px;
   }
+}
+.video-container .m-settings-btn {
+  display: none;
 }

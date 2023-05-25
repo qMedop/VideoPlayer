@@ -229,3 +229,16 @@
   align-items: center;
   font-family: 16px ;
 }
+.mini-player-btn {
+  display: none;
+}
+.settings-btn {
+  display: none;
+}
+.video-container .m-settings-btn {
+  top: 10px;
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+}

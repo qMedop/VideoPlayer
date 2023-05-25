@@ -119,13 +119,15 @@ function toggleFullScreen() {
     videoContainer.requestFullscreen()
     MSettingsBtn.style.top = '20px'
     MSettingsBtn.style.right = '20px'
+    if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
+      screen.orientation.lock('landscape');
+    }
     screen.orientation.lock('landscape');
   } else {
     document.exitFullscreen()
-    MSettingsBtn.style.top = '10px'
-    MSettingsBtn.style.right = '10px'
+    MSettingsBtn.style.top = '15px'
+    MSettingsBtn.style.right = '15px'
     screen.orientation.unlock('landscape');
-
   }
 }
 

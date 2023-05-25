@@ -119,10 +119,13 @@ function toggleFullScreen() {
     videoContainer.requestFullscreen()
     MSettingsBtn.style.top = '20px'
     MSettingsBtn.style.right = '20px'
+    screen.orientation.lock('landscape');
   } else {
     document.exitFullscreen()
     MSettingsBtn.style.top = '10px'
     MSettingsBtn.style.right = '10px'
+    screen.orientation.unlock('landscape');
+
   }
 }
 

@@ -86,10 +86,14 @@ height: 24px;
 .video-container:focus-within .controls-container {
   opacity: 1;
 }
+.video-container.paused .centertwo {
+  opacity: 0!important;
+}
 .video-container .controls-container .controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 5px;
 }
 .video-container .controls-container .controls .first {
   margin-left: 3px;
@@ -511,8 +515,8 @@ margin-bottom: 3px;
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   background-color: rgba(28, 28, 28, 0.667);
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   z-index: 1;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -536,8 +540,8 @@ margin-bottom: 3px;
   -o-transition: .2s;
 }
 .divSkip .svgs svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 .skipforward-animation {
   right: 10px;
@@ -688,6 +692,14 @@ margin-bottom: 3px;
   width: 30px;
   height: 30px;
 }
-.video-container:hover .center {
-  opacity: 1;
+.video-container .cntertwo {
+  opacity: 0;
+  width: 100%;
+  height: 75%;
+  pointer-events: none;
+}
+.video-container .cntertwo button {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }

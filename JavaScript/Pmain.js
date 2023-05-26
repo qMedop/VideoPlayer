@@ -42,6 +42,7 @@ const ConrollsMContaiener = document.querySelector('.video-container .center')
 const SkipForward = document.querySelector('.video-container .skip-forward')
 const SkipBackward = document.querySelector('.video-container .skip-backward')
 const SettingsContainer = document.querySelector('.video-container .settings .settings-option')
+const MobilePlay = document.querySelector('.video-container .center .play-pause-btn')
 const skipBackwardAnimation = document.querySelector('.video-container .skipBackward-animation')
 const skipforwardAnimation  = document.querySelector('.video-container .skipforward-animation ')
 const PlayAnimation  = document.querySelector('.video-container .play-animation')
@@ -71,8 +72,6 @@ document.addEventListener('keydown', e => {
     case " ":
     case "k":
       playPause()
-      ConrollsContaiener.style.opacity  = 1;
-      ConrollsMContaiener.style.opacity  = 1;
       clearTimeout(timeOut);
       HideView()
       break;
@@ -199,16 +198,6 @@ video.addEventListener('pause', () => {
 video.addEventListener('play', () => {
   videoContainer.classList.remove('paused')
 })
-videoContainer.addEventListener('click', (e) => {
-  if (e.target.toString() == "[object HTMLVideoElement]") {
-    playPause()
-  }
-})
-videoContainer.addEventListener('dblclick', (e) => {
-  if (e.target.toString() == "[object HTMLVideoElement]") {
-    toggleFullScreen()
-  }
-})
 playPausebtn.addEventListener('focus', () => {
   setTimeout(() => {
     playPausebtn.blur()
@@ -261,7 +250,6 @@ video.addEventListener('leavepictureinpicture', () => {
 })
 
 MuteBtn.addEventListener('click', toggleMute)
-
 let mutedViedo = 0
 function increaseVolume() {
   if(video.volume < 1) {
@@ -284,7 +272,9 @@ function toggleMute() {
 }
 let VolumeLvl
 video.addEventListener('volumechange', () => {
+  volumeSlider.value = video.volume
   if (video.muted || video.volume === 0) {
+    volumeSlider.value = 0
     VolumeLvl = "muted"
   } else if (video.volume <= .5) {
     VolumeLvl = "low"
@@ -316,30 +306,21 @@ function FormatTime(time) {
     return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
   }
 }
-let timeOut
-const  HideView = () => {
-  if(video.paused) {
+let ConrollsMContaienerValue = 0
+videoContainer.addEventListener('click' , (e) => {
+  if(ConrollsMContaienerValue == 0) {
+    ConrollsContaiener.style.opacity = '1'
+    ConrollsMContaiener.style.opacity = '1'
+    ConrollsMContaienerValue = 1
   } else {
-    timeOut = setTimeout(() => {
-  ConrollsContaiener.style.opacity  = 0
-}, 2000);
-timeOut = setTimeout(() => {
-  ConrollsMContaiener.style.opacity  = 0
-}, 2000);
+    if (e.target.toString() == '[object HTMLVideoElement]') {
+      ConrollsContaiener.style.opacity = '0'
+      ConrollsMContaiener.style.opacity = '0'
+      ConrollsMContaienerValue = 0
+    } else {
+    }
   }
-}
-HideView()
-videoContainer,addEventListener('mousemove', () => {
-  ConrollsContaiener.style.opacity  = 1;
-  ConrollsMContaiener.style.opacity  = 1;
-  clearTimeout(timeOut);
-  HideView()
-})
-ConrollsContaiener,addEventListener('click', () => {
-  ConrollsContaiener.style.opacity  = 1;
-  ConrollsMContaiener.style.opacity  = 1;
-  clearTimeout(timeOut);
-  HideView()
+  console.log(e.target.toString());
 })
 
 // SKip

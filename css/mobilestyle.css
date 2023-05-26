@@ -703,3 +703,19 @@ margin-bottom: 3px;
   height: 100%;
   pointer-events: none;
 }
+.video-container .timeline-container:hover .timeline .thumb-indicaror,
+.video-container.scrubbing .timeline-container .timeline .thumb-indicaror {
+  --scale: 1;
+}
+.video-container .timeline-container:hover .timeline,
+.video-container.scrubbing .timeline-container .timeline {
+  height: 100%;
+}
+.video-container .timeline-container:hover .timeline::before,
+.video-container.scrubbing .timeline-container .timeline::before {
+  display: block;
+}
+.video-container .timeline-container:hover .preview-img,
+.video-container.scrubbing .timeline-container .preview-img {
+  display: block;
+}

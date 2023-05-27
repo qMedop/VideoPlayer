@@ -321,12 +321,12 @@ const  HideView = () => {
   }
 }
 HideView()
-videoContainer,addEventListener('mousemove', () => {
+videoContainer.addEventListener('mousemove', () => {
   ConrollsContaiener.style.opacity  = 1;
   clearTimeout(timeOut);
   HideView()
 })
-ConrollsContaiener,addEventListener('click', () => {
+ConrollsContaiener.addEventListener('click', () => {
   ConrollsContaiener.style.opacity  = 1;
   clearTimeout(timeOut);
   HideView()

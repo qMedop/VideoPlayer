@@ -141,8 +141,8 @@ function toggleScrubbing(e) {
     }
   }
 }
-TimeLineContaienr.addEventListener('touchstart', HandleTimeLine)
-TimeLineContaienr.addEventListener('touchstart', toggleScrubbing)
+// TimeLineContaienr.addEventListener('touchstart', HandleTimeLine)
+// TimeLineContaienr.addEventListener('touchstart', toggleScrubbing)
 // function clcikk(e) {
 //   var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
 //   var touch = evt.touches[0] || evt.changedTouches[0];

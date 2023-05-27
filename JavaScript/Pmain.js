@@ -104,6 +104,7 @@ document.addEventListener('keydown', e => {
 // TimeLine
 TimeLineContaienr.addEventListener('touchmove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('touchend' , toggleScrubbing)
+TimeLineContaienr.addEventListener('touchend' , HandleTimeLine)
 // TimeLineContaienr.addEventListener('t' , toggleScrubbing)
 // document.addEventListener('mouseup', e=> {
 //   if(isScrubbing) {

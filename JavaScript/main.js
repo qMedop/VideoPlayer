@@ -48,16 +48,7 @@ const PauseAnimation  = document.querySelector('.video-container .pause-animatio
 let buttons = document.querySelectorAll('button')
 let inputs = document.querySelectorAll('input')
 
-for(let i =0 ; i < buttons.length ; i++) {
-  buttons[i].onfocus = function () {
-    buttons[i].blur()
-  }
-}
-for(let i =0 ; i < inputs.length ; i++) {
-  inputs[i].onfocus = function () {
-    inputs[i].blur()
-  }
-}
+
 
 const videoContainer = document.querySelector('.video-container')
 
@@ -479,3 +470,17 @@ function increaseSpeed() {
     }, 150);  }
 }
 
+urluploadbtn.addEventListener('click' , () => {
+  if(urlvalue.value.length == 0) {
+  } else {
+    blah.src = urlvalue.value
+    blahh.src = urlvalue.value
+    urlvalue.value = ""
+  }
+})
+video.onwaiting = (event) => {
+  videoContainer.classList.add('loading')
+};
+video.onplaying = (event) => {
+  videoContainer.classList.remove('loading')
+};

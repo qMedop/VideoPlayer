@@ -38,8 +38,8 @@ width: 24px;
 height: 24px;
 }
 .video-container .center svg {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   }
 .video-container {
   width: 100%;
@@ -691,6 +691,20 @@ margin-bottom: 3px;
 .video-container .center svg {
   width: 30px;
   height: 30px;
+}
+@media (min-width: 500px) {
+  .video-container .center {
+gap: 240px;
+  }
+  .video-container .center button {
+    width: 80px;
+    height: 80px;
+    pointer-events: all;
+  }
+  .video-container .center svg {
+    width: 50px;
+    height: 50px;
+  }
 }
 .video-container .cntertwo {
   opacity: 0;

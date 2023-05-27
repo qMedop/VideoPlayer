@@ -103,18 +103,13 @@ document.addEventListener('keydown', e => {
 // TimeLine
 TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
-TimeLineContaienr.addEventListener('clcik' , toggleScrubbing)
+TimeLineContaienr.addEventListener('click' , toggleScrubbing)
 document.addEventListener('mouseup', e=> {
   if(isScrubbing) {
     toggleScrubbing(e)
   }
 })
 document.addEventListener('moousemove', e=> {
-  if(isScrubbing) {
-    HandleTimeLine(e)
-  }
-})
-document.addEventListener('mousemove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
   }
@@ -264,24 +259,27 @@ volumeSlider.addEventListener('input', e => {
   video.muted = e.target.value === 0
 })
 let mutedViedo = 0
+let mutedViedoo = 0
+
 function increaseVolume() {
-  if(video.volume < 1) {
+  if(video.volume < 1 && mutedViedoo == 0) {
     video.volume = video.volume + 0.1
     mutedViedo = 0
+  }  if(video.volume < 0.1) {
+    video.volume = 0.1
+    mutedViedoo = 0
   }
 }
 function decreaceVolume() {
   if(video.volume >= 0 && mutedViedo == 0) {
     video.volume = video.volume - 0.1
-    console.log(video.volume);
-    if(video.volume < 0.01) {
+    if(video.volume < 0.00000001) {
       mutedViedo = 1
-      video.muted = !video.muted
+      VolumeLvl = "muted"
+      
     }
   }
-}
-function toggleMute() {
-  video.muted = !video.muted
+  videoContainer.dataset.volumelevel = VolumeLvl  
 }
 let VolumeLvl
 video.addEventListener('volumechange', () => {
@@ -296,6 +294,9 @@ video.addEventListener('volumechange', () => {
   }
   videoContainer.dataset.volumelevel = VolumeLvl
 })
+function toggleMute() {
+  video.muted = !video.muted
+}
 
 video.addEventListener('loadeddata', () => {
   TotalTime.textContent = FormatTime(video.duration)
@@ -416,7 +417,6 @@ function ClsoeSettings() {
 document.addEventListener('click', e => {
   if(settingsValue == 1) {
     if (e.target.getAttribute('active')) {
-      console.log(e.target.getAttribute('active'));
     } else {
       ClsoeSettings()
     }

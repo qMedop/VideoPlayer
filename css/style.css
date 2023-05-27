@@ -361,7 +361,7 @@ height: 28px;
   top: 0;
   bottom: 0;
   right: calc(100% - var(--progress-position) * 100%);
-  background-color: red;
+  background-color: #006358;
 
 }
 .video-container .timeline .thumb-indicaror {
@@ -371,7 +371,7 @@ height: 28px;
   height: 200%;
   top: 50%;
   right: calc(100% - var(--progress-position) * 100%);
-  background-color: red;
+  background-color: #006358;
   border-radius: 50%;
   transition: transform 150ms ease-in-out;
   -webkit-border-radius: 50%;

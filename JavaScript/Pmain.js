@@ -103,23 +103,19 @@ document.addEventListener('keydown', e => {
 })
 // TimeLine
 TimeLineContaienr.addEventListener('touchmove' , HandleTimeLine)
-TimeLineContaienr.addEventListener('touchmove' , toggleScrubbing)
-TimeLineContaienr.addEventListener('clcik' , toggleScrubbing)
-document.addEventListener('mouseup', e=> {
-  if(isScrubbing) {
-    toggleScrubbing(e)
-  }
-})
+TimeLineContaienr.addEventListener('touchend' , toggleScrubbing)
+// TimeLineContaienr.addEventListener('t' , toggleScrubbing)
+// document.addEventListener('mouseup', e=> {
+//   if(isScrubbing) {
+//     toggleScrubbing(e)
+//   }
+// })
 document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
   }
 })
-document.addEventListener('touchmove', e=> {
-  if(isScrubbing) {
-    HandleTimeLine(e)
-  }
-})
+
 let isScrubbing = false
 let wasPassed 
 function toggleScrubbing(e) {

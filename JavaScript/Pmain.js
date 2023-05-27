@@ -102,20 +102,20 @@ document.addEventListener('keydown', e => {
   }
 })
 // TimeLine
-TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
-TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
+TimeLineContaienr.addEventListener('touchmove' , HandleTimeLine)
+TimeLineContaienr.addEventListener('touchmove' , toggleScrubbing)
 TimeLineContaienr.addEventListener('clcik' , toggleScrubbing)
 document.addEventListener('mouseup', e=> {
   if(isScrubbing) {
     toggleScrubbing(e)
   }
 })
-document.addEventListener('moousemove', e=> {
+document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
   }
 })
-document.addEventListener('mousemove', e=> {
+document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
   }
@@ -123,8 +123,12 @@ document.addEventListener('mousemove', e=> {
 let isScrubbing = false
 let wasPassed 
 function toggleScrubbing(e) {
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch = evt.touches[0] || evt.changedTouches[0];
+  x = touch.pageX;
+  y = touch.pageY; 
   const rect = TimeLineContaienr.getBoundingClientRect()
-  const percent = Math.min(Math.max(0,e.x - rect.x), rect.width) / rect.width
+  const percent = Math.min(Math.max(0,x - rect.x), rect.width) / rect.width
   isScrubbing = (e.buttons & 1) === 1
   videoContainer.classList.toggle("scrubbing", isScrubbing)
   if(isScrubbing) {
@@ -137,18 +141,44 @@ function toggleScrubbing(e) {
     }
   }
 }
-function clcikk(e) {
-  const rect = TimeLineContaienr.getBoundingClientRect()
-  const percent = Math.min(Math.max(0,e.x - rect.x), rect.width) / rect.width
-    video.currentTime = percent * video.duration
-
-}
+TimeLineContaienr.addEventListener('touchstart', HandleTimeLine)
+TimeLineContaienr.addEventListener('touchstart', toggleScrubbing)
+// function clcikk(e) {
+//   var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+//   var touch = evt.touches[0] || evt.changedTouches[0];
+//   x = touch.pageX;
+//   y = touch.pageY; 
+//   const rect = TimeLineContaienr.getBoundingClientRect()
+//   const percent = Math.min(Math.max(0,x - rect.x), rect.width) / rect.width
+//   const percentt = percent * video.duration
+//   let percentTwo = percent 
+//   TimeLineContaienr.style.setProperty("--preview-position", percent)
+//   if(percent > 0.92) {
+//     percentTwo = 0.92
+//   } else if(percent < 0.079){
+//     percentTwo = 0.079
+//   }
+//   TimeLineContaienr.style.setProperty("--preview-position-img", percentTwo)
+//   if (video.getAttribute('src') === '') {
+    
+//   } else {
+//     previewvideo.currentTime = percentt
+//   }
+//   if(isScrubbing) {
+//     e.preventDefault()
+//     TimeLineContaienr.style.setProperty("--progress-position", percent)
+//   }
+// }
 function HandleTimeLine(e) {
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch = evt.touches[0] || evt.changedTouches[0];
+  x = touch.pageX;
+  y = touch.pageY; 
   const rect = TimeLineContaienr.getBoundingClientRect()
-  const percent = Math.min(Math.max(0,e.x - rect.x), rect.width) / rect.width
+  const percent = Math.min(Math.max(0,x - rect.x), rect.width) / rect.width
   const percentt = percent * video.duration
+  let percentTwo = percent 
   TimeLineContaienr.style.setProperty("--preview-position", percent)
-  let percentTwo = percent
   if(percent > 0.92) {
     percentTwo = 0.92
   } else if(percent < 0.079){
@@ -163,9 +193,7 @@ function HandleTimeLine(e) {
   if(isScrubbing) {
     e.preventDefault()
     TimeLineContaienr.style.setProperty("--progress-position", percent)
-
   }
-
 }
 let PlayAnimationValue = 0
 let PasueAnimationValue = 0
@@ -307,6 +335,7 @@ function FormatTime(time) {
   }
 }
 let ConrollsMContaienerValue = 0
+
 videoContainer.addEventListener('click' , (e) => {
   if(ConrollsMContaienerValue == 0) {
     ConrollsContaiener.style.opacity = '1'

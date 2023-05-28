@@ -49,7 +49,7 @@ const PlayAnimation  = document.querySelector('.video-container .play-animation'
 const PauseAnimation  = document.querySelector('.video-container .pause-animation')
 let buttons = document.querySelectorAll('button')
 let inputs = document.querySelectorAll('input')
-
+let settime 
 for(let i =0 ; i < buttons.length ; i++) {
   buttons[i].onfocus = function () {
     buttons[i].blur()
@@ -103,8 +103,20 @@ document.addEventListener('keydown', e => {
 })
 // TimeLine
 TimeLineContaienr.addEventListener('touchmove' , HandleTimeLine)
+TimeLineContaienr.addEventListener('touchstart' , HandleTimeLine)
 TimeLineContaienr.addEventListener('touchend' , toggleScrubbing)
-TimeLineContaienr.addEventListener('touchend' , HandleTimeLine)
+
+TimeLineContaienr.addEventListener('touchstart' , () => {
+  videoContainer.classList.toggle('scrubbing')
+})
+
+
+// TimeLineContaienr.addEventListener('t' , toggleScrubbing)
+// document.addEventListener('mouseup', e=> {
+//   if(isScrubbing) {
+//     toggleScrubbing(e)
+//   }
+// })
 document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
@@ -131,8 +143,8 @@ function toggleScrubbing(e) {
       video.play()
     }
   }
+  clearTimeout(settime)
 }
-
 function HandleTimeLine(e) {
   var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
   var touch = evt.touches[0] || evt.changedTouches[0];
@@ -143,26 +155,50 @@ function HandleTimeLine(e) {
   const percentt = percent * video.duration
   let percentTwo = percent 
   TimeLineContaienr.style.setProperty("--preview-position", percent)
-  if(percent > 0.92) {
-    percentTwo = 0.92
-  } else if(percent < 0.079){
-    percentTwo = 0.079
+  if (ConrollsContaiener.clientWidth > 400){
+    if(percent > 0.80) {
+      percentTwo = 0.80
+    } else if(percent < 0.20){
+      percentTwo = 0.20
+    }
+  } else if (ConrollsContaiener.clientWidth < 600) {
+    if(percent > 0.70) {
+      percentTwo = 0.70
+    } else if(percent < 0.30){
+      percentTwo = 0.30
+    }
   }
   TimeLineContaienr.style.setProperty("--preview-position-img", percentTwo)
   if (video.getAttribute('src') === '') {
     
   } else {
+    going.textContent = previewtime(percentt)
     previewvideo.currentTime = percentt
   }
   if(isScrubbing) {
     e.preventDefault()
     TimeLineContaienr.style.setProperty("--progress-position", percent)
   }
+  function previewtime(time) {
+    const s = Math.floor(time % 60)
+    const m = Math.floor(time / 60) % 60
+    const h = Math.floor(time / 3600)
+    if (h === 0) {
+      return `${m}:${leadingZeroFormatter.format(s)}`
+    }else if (h !== 0) {
+      return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
+    }
+  }
+  clearTimeout(settime)
 }
 let PlayAnimationValue = 0
 let PasueAnimationValue = 0
 function playPause() {
   if (video.paused == true) {
+    settime = setTimeout(() => {
+      HideUi()
+      ConrollsMContaienerValue = 0
+    }, 2000);
     video.play()
     if(PasueAnimationValue == 0) {
       PasueAnimationValue = 1
@@ -173,6 +209,7 @@ function playPause() {
       }, 700);
     }
   } else {
+    clearTimeout(settime)
     video.pause()
     if(PlayAnimationValue == 0) {
       PlayAnimationValue = 1
@@ -252,7 +289,6 @@ function increaseVolume() {
 function decreaceVolume() {
   if(video.volume >= 0 && mutedViedo == 0) {
     video.volume = video.volume - 0.1
-    console.log(video.volume);
     if(video.volume < 0.01) {
       mutedViedo = 1
       video.muted = !video.muted
@@ -261,21 +297,12 @@ function decreaceVolume() {
 }
 function toggleMute() {
   video.muted = !video.muted
+  if(video.muted == false) {
+    videoContainer.dataset.volumelevel = 'high'
+  } else (
+    videoContainer.dataset.volumelevel = 'muted'
+  )
 }
-let VolumeLvl
-video.addEventListener('volumechange', () => {
-  volumeSlider.value = video.volume
-  if (video.muted || video.volume === 0) {
-    volumeSlider.value = 0
-    VolumeLvl = "muted"
-  } else if (video.volume <= .5) {
-    VolumeLvl = "low"
-  } else {
-    VolumeLvl = "high"
-  }
-  videoContainer.dataset.volumelevel = VolumeLvl
-})
-
 video.addEventListener('loadeddata', () => {
   TotalTime.textContent = FormatTime(video.duration)
 })
@@ -298,23 +325,21 @@ function FormatTime(time) {
     return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
   }
 }
-let ConrollsMContaienerValue = 0
+let ConrollsMContaienerValue = 1
 
 videoContainer.addEventListener('click' , (e) => {
   if(ConrollsMContaienerValue == 0) {
-    ConrollsContaiener.style.opacity = '1'
-    ConrollsMContaiener.style.opacity = '1'
+    ShowUi()
     ConrollsMContaienerValue = 1
   } else {
     if (e.target.toString() == '[object HTMLVideoElement]') {
-      ConrollsContaiener.style.opacity = '0'
-      ConrollsMContaiener.style.opacity = '0'
+      HideUi()
       ConrollsMContaienerValue = 0
     } else {
     }
   }
-  console.log(e.target.toString());
 })
+
 
 // SKip
 let SkipValue = 5
@@ -369,6 +394,7 @@ settingsBtn.addEventListener('click', () => {
     OpenSettings()
   } else {
     ClsoeSettings()
+
   }
 })
 function OpenSettings() {
@@ -392,7 +418,7 @@ function ClsoeSettings() {
 document.addEventListener('click', e => {
   if(settingsValue == 1) {
     if (e.target.getAttribute('active')) {
-      console.log(e.target.getAttribute('active'));
+    
     } else {
       ClsoeSettings()
     }
@@ -454,4 +480,33 @@ function increaseSpeed() {
       increase.style.transform= "scale(1)";
     }, 150);  }
 }
+video.onwaiting = (event) => {
+  videoContainer.classList.add('loading')
+};
+video.onplaying = (event) => {
+  videoContainer.classList.remove('loading')
+};
 
+function ShowUi() {
+  ConrollsContaiener.style.opacity = '1'
+  ConrollsMContaiener.style.opacity = '1'
+  clearTimeout(settime)
+  settime = setTimeout(() => {
+    if(video.paused == true) {
+
+    } else {
+      HideUi()
+      ConrollsMContaienerValue = 0
+    }
+  }, 2000);
+}
+ConrollsContaiener.addEventListener('touchend', () => {
+  settime = setTimeout(() => {
+      HideUi()
+      ConrollsMContaienerValue = 0
+  }, 2000);
+})
+function HideUi() {
+  ConrollsContaiener.style.opacity = '0'
+  ConrollsMContaiener.style.opacity = '0'
+}

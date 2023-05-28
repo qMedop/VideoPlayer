@@ -86,11 +86,14 @@ document.addEventListener('keydown', e => {
         case "arrowup": 
         increaseVolume()
         break;
-      case "arrowdown": 
+        case "arrowdown": 
         decreaceVolume()
         break;
-  }
-})
+      }
+    })
+const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
+      minimumIntegerDigits: 2,
+    })
 // TimeLine
 TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
@@ -98,6 +101,11 @@ TimeLineContaienr.addEventListener('click' , toggleScrubbing)
 document.addEventListener('mouseup', e=> {
   if(isScrubbing) {
     toggleScrubbing(e)
+  }
+})
+document.addEventListener('mouseup', e=> {
+  if(isScrubbing) {
+    HandleTimeLine(e)
   }
 })
 document.addEventListener('moousemove', e=> {
@@ -134,24 +142,41 @@ function HandleTimeLine(e) {
   const percentt = percent * video.duration
   TimeLineContaienr.style.setProperty("--preview-position", percent)
   let percentTwo = percent
-  if(percent > 0.92) {
-    percentTwo = 0.92
-  } else if(percent < 0.079){
-    percentTwo = 0.079
+  if (ConrollsContaiener.clientWidth > 1300){
+    console.log('object');
+    if(percent > 0.88) {
+      percentTwo = 0.88
+    } else if(percent < 0.12){
+      percentTwo = 0.12
+    }
+  } else if (ConrollsContaiener.clientWidth < 1200) {
+    if(percent > 0.86) {
+      percentTwo = 0.86
+    } else if(percent < 0.14){
+      percentTwo = 0.14
+    }
   }
   TimeLineContaienr.style.setProperty("--preview-position-img", percentTwo)
   if (video.getAttribute('src') === '') {
     
   } else {
     previewvideo.currentTime = percentt
+    going.textContent = previewtime(percentt)
   }
   if(isScrubbing) {
     e.preventDefault()
     TimeLineContaienr.style.setProperty("--progress-position", percent)
-
+  } function previewtime(time) {
+    const s = Math.floor(time % 60)
+    const m = Math.floor(time / 60) % 60
+    const h = Math.floor(time / 3600)
+    if (h === 0) {
+      return `${m}:${leadingZeroFormatter.format(s)}`
+    }else if (h !== 0) {
+      return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
+    }
   }
-
-}
+  }
 let PlayAnimationValue = 0
 let PasueAnimationValue = 0
 function playPause() {
@@ -297,9 +322,6 @@ video.addEventListener('timeupdate', () => {
   CurrentTime.textContent = FormatTime(video.currentTime)
   const percent = video.currentTime / video.duration
   TimeLineContaienr.style.setProperty("--progress-position", percent)
-})
-const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
-  minimumIntegerDigits: 2,
 })
 function FormatTime(time) {
   const s = Math.floor(time % 60)

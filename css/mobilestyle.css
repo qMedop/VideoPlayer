@@ -409,21 +409,7 @@ margin-bottom: 3px;
   border-radius: 3px;
   cursor: pointer;
 }
-.video-container .content::after {
-  content: "Upload Your Video";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(39 98 142);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  font-family: sans-serif;
-  color: #bffffd;
-}
+
 
 .video-container .settings {
   position: relative;

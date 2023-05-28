@@ -278,7 +278,7 @@ margin-bottom: 3px;
 }
 .video-container .timeline-container .timeline {
   background-color: rgba(100, 100, 100, .5);
-  height: 3px;
+  height: 5px;
   width: 100%;
   position: relative ;
 }
@@ -312,7 +312,7 @@ margin-bottom: 3px;
   height: 200%;
   top: 50%;
   right: calc(100% - var(--preview-position) * 100%);
-  background-color: red;
+  background-color: #006358;
   border-radius: 50%;
   transition: transform 150ms ease-in-out;
   -webkit-border-radius: 50%;

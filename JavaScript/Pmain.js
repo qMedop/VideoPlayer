@@ -99,14 +99,10 @@ TimeLineContaienr.addEventListener('touchend' , toggleScrubbing)
 TimeLineContaienr.addEventListener('touchstart' , () => {
   videoContainer.classList.toggle('scrubbing')
 })
+ConrollsContaiener.addEventListener('touchstart' , () => {
+  videoContainer.classList.toggle('scrubbing')
+})
 
-
-// TimeLineContaienr.addEventListener('t' , toggleScrubbing)
-// document.addEventListener('mouseup', e=> {
-//   if(isScrubbing) {
-//     toggleScrubbing(e)
-//   }
-// })
 document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)

@@ -50,16 +50,6 @@ const PauseAnimation  = document.querySelector('.video-container .pause-animatio
 let buttons = document.querySelectorAll('button')
 let inputs = document.querySelectorAll('input')
 let settime 
-for(let i =0 ; i < buttons.length ; i++) {
-  buttons[i].onfocus = function () {
-    buttons[i].blur()
-  }
-}
-for(let i =0 ; i < inputs.length ; i++) {
-  inputs[i].onfocus = function () {
-    inputs[i].blur()
-  }
-}
 
 const videoContainer = document.querySelector('.video-container')
 
@@ -406,6 +396,7 @@ function OpenSettings() {
   setTimeout(() => {
     SettingsContainer.style.opacity = '1'
   }, 10);
+  clearTimeout(settime)
 }
 function ClsoeSettings() {
   settingsValue = 0
@@ -414,6 +405,10 @@ function ClsoeSettings() {
   setTimeout(() => {
     SettingsContainer.style.display = 'none'
   }, 150);
+  settime = setTimeout(() => {
+    HideUi()
+    ConrollsMContaienerValue = 0
+}, 2000);
 }
 document.addEventListener('click', e => {
   if(settingsValue == 1) {
@@ -500,13 +495,13 @@ function ShowUi() {
     }
   }, 2000);
 }
-ConrollsContaiener.addEventListener('touchend', () => {
+function HideUi() {
+  ConrollsContaiener.style.opacity = '0'
+  ConrollsMContaiener.style.opacity = '0'
+}
+TimeLineContaienr.addEventListener('touchend', () => {
   settime = setTimeout(() => {
       HideUi()
       ConrollsMContaienerValue = 0
   }, 2000);
 })
-function HideUi() {
-  ConrollsContaiener.style.opacity = '0'
-  ConrollsMContaiener.style.opacity = '0'
-}

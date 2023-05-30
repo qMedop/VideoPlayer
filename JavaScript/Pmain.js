@@ -50,7 +50,7 @@ const PauseAnimation  = document.querySelector('.video-container .pause-animatio
 let buttons = document.querySelectorAll('button')
 let inputs = document.querySelectorAll('input')
 let settime 
-
+const ConrollsMContaienerbtns = document.querySelectorAll('.video-container .center button')
 const videoContainer = document.querySelector('.video-container')
 
 playPausebtn.addEventListener('click', () => {
@@ -99,10 +99,19 @@ TimeLineContaienr.addEventListener('touchend' , toggleScrubbing)
 TimeLineContaienr.addEventListener('touchstart' , () => {
   videoContainer.classList.toggle('scrubbing')
 })
-ConrollsContaiener.addEventListener('touchstart' , () => {
-  videoContainer.classList.toggle('scrubbing')
-})
+going.addEventListener('touchmove' , HandleTimeLine)
+going.addEventListener('touchstart' , HandleTimeLine)
+// going.addEventListener('touchend' , toggleScrubbing)
 
+// going.addEventListener('touchstart' , () => {
+//   videoContainer.classList.toggle('scrubbing')
+// })
+going.addEventListener('touchstart' , () => {
+  going.style.opacity = '1'
+})
+going.addEventListener('touchend' , () => {
+  going.style.opacity = '0'
+})
 document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
@@ -321,6 +330,7 @@ videoContainer.addEventListener('click' , (e) => {
     if (e.target.toString() == '[object HTMLVideoElement]') {
       HideUi()
       ConrollsMContaienerValue = 0
+      console.log(e.target);
     } else {
     }
   }
@@ -481,6 +491,10 @@ video.onplaying = (event) => {
 function ShowUi() {
   ConrollsContaiener.style.opacity = '1'
   ConrollsMContaiener.style.opacity = '1'
+  ConrollsContaiener.style.pointerEvents = 'all';
+  for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
+    ConrollsMContaienerbtns[i].style.pointerEvents = 'all';
+  }
   clearTimeout(settime)
   settime = setTimeout(() => {
     if(video.paused == true) {
@@ -494,10 +508,22 @@ function ShowUi() {
 function HideUi() {
   ConrollsContaiener.style.opacity = '0'
   ConrollsMContaiener.style.opacity = '0'
+  ConrollsContaiener.style.pointerEvents = 'none';
+  for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
+    ConrollsMContaienerbtns[i].style.pointerEvents = 'none';
+  }
 }
 TimeLineContaienr.addEventListener('touchend', () => {
   settime = setTimeout(() => {
       HideUi()
       ConrollsMContaienerValue = 0
   }, 2000);
+})
+urluploadbtn.addEventListener('click' , () => {
+  if(urlvalue.value.length == 0) {
+  } else {
+    blah.src = urlvalue.value
+    blahh.src = urlvalue.value
+    urlvalue.value = ""
+  }
 })

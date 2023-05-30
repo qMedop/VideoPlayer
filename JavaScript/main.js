@@ -62,6 +62,8 @@ document.addEventListener('keydown', e => {
     case "k":
       playPause()
       ConrollsContaiener.style.opacity  = 1;
+      document.body.style.cursor = 'default'
+      ConrollsContaiener.style.pointerEvents = 'all';
       clearTimeout(timeOut);
       HideView()
       break;
@@ -97,6 +99,8 @@ const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 // TimeLine
 TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
+
+document.addEventListener('mousemove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('click' , toggleScrubbing)
 document.addEventListener('mouseup', e=> {
   if(isScrubbing) {
@@ -339,17 +343,23 @@ const  HideView = () => {
   } else {
     timeOut = setTimeout(() => {
   ConrollsContaiener.style.opacity  = 0
+  ConrollsContaiener.style.pointerEvents = 'none';
+  document.body.style.cursor = 'none'
 }, 2000);
   }
 }
 HideView()
 videoContainer.addEventListener('mousemove', () => {
   ConrollsContaiener.style.opacity  = 1;
+  document.body.style.cursor = 'default'
+  ConrollsContaiener.style.pointerEvents = 'all';
   clearTimeout(timeOut);
   HideView()
 })
 ConrollsContaiener.addEventListener('click', () => {
   ConrollsContaiener.style.opacity  = 1;
+  ConrollsContaiener.style.pointerEvents = 'all';
+  document.body.style.cursor = 'default'
   clearTimeout(timeOut);
   HideView()
 })

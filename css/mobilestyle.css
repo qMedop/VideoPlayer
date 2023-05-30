@@ -420,26 +420,13 @@ margin-bottom: 3px;
   position: relative;
 }
 .video-container .settings .settings-option svg{
-  width: 16px;
+  width: 20px;
 }
 .video-container .settings .settings-option .skip-value svg {
-  width: 9px;
-  margin-left: 5px;
+  width: 12px;
+  margin-left: 6px;
 }
 .video-container .settings .settings-option {
-  width: 200px;
-  position: absolute;
-  background-color: rgba(28,28,28,.9);
-  right: -25px;
-  height: 95px;
-  bottom: 40px;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  padding: 2px 0px ;
-  font-size: 8px;
   font-family: sans-serif;
   display: none;
   opacity: 0;
@@ -448,12 +435,24 @@ margin-bottom: 3px;
   -moz-transition: .15s;
   -ms-transition: .15s;
   -o-transition: .15s;
+  width: 200px;
+  position: absolute;
+  background-color: rgba(28,28,28,.9);
+  right: -25px;
+  bottom: 45px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  padding: 4px 0px ;
+  font-size: 10px;
 }
 .video-container .settings .settings-option div {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px 1px;
+  padding: 3px 3px;
   cursor: pointer;
   transition: 150ms;
   -webkit-transition: 150ms;
@@ -462,7 +461,7 @@ margin-bottom: 3px;
   -o-transition: 150ms;
 }
 .video-container .settings .settings-option .skip-value {
-  padding: 1px 1px 0px;
+  padding: 3px 3px 0px;
   border-radius: 0px 0px 4px 4px;
   -webkit-border-radius: 0px 0px 4px 4px;
   -moz-border-radius: 0px 0px 4px 4px;
@@ -471,7 +470,7 @@ margin-bottom: 3px;
 }
 .video-container .settings .settings-option div h3{
   font-weight: 300;
-  margin-left: 3px;
+  margin-left: 4px;
 }
 .video-container .settings .settings-option div .settings-second h3{
   font-weight: 300;
@@ -479,7 +478,7 @@ margin-bottom: 3px;
   margin-right: 5px;
 }
 #speedValue {
-  margin: 0px 2px;
+  margin: 0px 0px;
 }
 .video-container .settings .settings-option .speed .settings-second .svg {
   display: flex;
@@ -490,10 +489,10 @@ margin-bottom: 3px;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 }
-@media (max-width: 500px) {
+/* @media (min-width: 500px) {
   .video-container .settings .settings-option svg{
     width: 20px;
   }
@@ -545,7 +544,7 @@ margin-bottom: 3px;
     width: 30px;
     height: 30px;
   }
-}
+} */
 #speedValue {
   width: 28px;
   text-align: center;

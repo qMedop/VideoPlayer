@@ -31,7 +31,8 @@ body {
   width: 32px;
   height: 32px;
   animation: scale 0.3s linear reverse;
-  -webkit-animation: scale 0.3s linear ;
+  -webkit-animation: scale 0.3s linear reverse;
+
 }
 .video-container svg:hover {
   transform: scale(0.96);
@@ -181,11 +182,11 @@ height: 28px;
     -o-transform: scale(1);
 }
 50% {
-  transform: scale(0.9);
-  -webkit-transform: scale(0.9);
-  -moz-transform: scale(0.9);
-  -ms-transform: scale(0.9);
-  -o-transform: scale(0.9);
+  transform: scale(0.8);
+  -webkit-transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -o-transform: scale(0.8);
 }
 100% {
   transform: scale(1);
@@ -804,6 +805,7 @@ height: 28px;
   pointer-events: none;
   display: none;
 }
-.video-container .timeline-container:hover #going {
+.video-container .timeline-container:hover #going,
+.video-container.scrubbing .timeline-container #going{
   display: block;
 }

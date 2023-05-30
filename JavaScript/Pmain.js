@@ -112,6 +112,12 @@ going.addEventListener('touchstart' , () => {
 going.addEventListener('touchend' , () => {
   going.style.opacity = '0'
 })
+TimeLineContaienr.addEventListener('touchstart' , () => {
+  going.style.opacity = '1'
+})
+TimeLineContaienr.addEventListener('touchend' , () => {
+  going.style.opacity = '0'
+})
 document.addEventListener('touchmove', e=> {
   if(isScrubbing) {
     HandleTimeLine(e)
@@ -330,12 +336,19 @@ videoContainer.addEventListener('click' , (e) => {
     if (e.target.toString() == '[object HTMLVideoElement]') {
       HideUi()
       ConrollsMContaienerValue = 0
-      console.log(e.target);
-    } else {
     }
   }
 })
+// video.addEventListener('dblclick' , skiptouch)
 
+// function skiptouch(e) {
+//   if(videoContainer.clientWidth - e.x < 100) {
+//     SkipTo()
+//   } else if(e.x < 100) {
+//     SkipBack()
+//   }
+//   console.log('object');
+// }
 
 // SKip
 let SkipValue = 5

@@ -558,26 +558,22 @@ margin-bottom: 3px;
 }
 .divSkip {
   position: absolute;
-  top: 20%;
-  transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+  top: 0;
   background-color: rgba(28, 28, 28, 0.667);
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100%;
   z-index: 1;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding-top: 8px;
+  pointer-events: none;
+}
+@media (min-width: 500px) {
+  .divSkip {
+    width: 150px;
+  }
 }
 .divSkip .svgs {
   display: flex;
@@ -594,9 +590,37 @@ margin-bottom: 3px;
   height: 12px;
 }
 .skipforward-animation {
-  right: 10px;
+  display: none;
+  opacity: 1;
+  transition: 0.2s;
+  right: 0;
+  border-radius:50% 0px 0px 50% ;
+  -webkit-border-radius:50% 0px 0px 50% ;
+  -moz-border-radius:50% 0px 0px 50% ;
+  -ms-border-radius:50% 0px 0px 50% ;
+  -o-border-radius:50% 0px 0px 50% ;
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -ms-transition: 0.2s;
+  -o-transition: 0.2s;
+}
+.skipBackward-animation {
   display: none;
   opacity: 0;
+  left: 0;
+  border-radius: 0px 50% 50% 0px ;
+  -webkit-border-radius: 0px 50% 50% 0px ;
+  -moz-border-radius: 0px 50% 50% 0px ;
+  -ms-border-radius: 0px 50% 50% 0px ;
+  -o-border-radius: 0px 50% 50% 0px ;
+}
+.video-container.skipping-back .skipBackward-animation {
+  display: flex;
+  opacity: 1;
+}
+.video-container.skipping-to .skipforward-animation {
+  display: flex;
+  opacity: 1;
 }
 .divSkip p {
   color: white;
@@ -604,18 +628,13 @@ margin-bottom: 3px;
   font-size: 6px;
   margin-top: 3px;
 }
-.skipBackward-animation {
-  left: 10px;
-  display: none;
-  opacity: 0;
-}
 .divSkip svg {
   fill: #fff;
   opacity: 0.5;
 }
 .skipforward-animation svg:nth-child(1) {
-  animation: SkipAnimation 0.2s linear;
-  -webkit-animation: SkipAnimation 0.2s linear;
+  animation: SkipAnimation 0.2s linear ;
+  -webkit-animation: SkipAnimation 0.2s linear ;
 }
 .skipforward-animation svg:nth-child(2) {
   animation: SkipAnimation 0.2s linear;

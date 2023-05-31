@@ -556,7 +556,6 @@ function skiptouch(e) {
       }, 100);
       videoContainer.classList.add('skipping-to')
     }, 300);
-    console.log('object');
   } else if(touch.pageX < 100) {
     timeskipout = setTimeout(() => {
       e.preventDefault()
@@ -568,7 +567,6 @@ function skiptouch(e) {
       videoContainer.classList.add('skipping-back')
     }, 300);
   } else {
-    console.log('er');
   }
 }
 function skipend(e) {
@@ -579,5 +577,20 @@ function skipend(e) {
   BAValue.innerHTML = 0
   videoContainer.classList.remove('skipping-to')
   videoContainer.classList.remove('skipping-back')
-
 }
+let dbltouch = 0
+let dbltouchtimeout
+video.addEventListener('click', (e) => {
+  dbltouch = dbltouch + 1
+  if(dbltouch >= 2) {
+    clearTimeout(dbltouchtimeout)
+    playPause()
+  }
+  dbltouchtimeout = setTimeout(() => {
+    dbltouch = 0
+  }, 300);
+  console.log(dbltouch);
+})
+// if( e.x <= video.clientWidth / 2 + 50 && e.x >= video.clientWidth / 2 - 50 ) {
+//   playPause()
+// }

@@ -585,6 +585,9 @@ video.addEventListener('click', (e) => {
   if(dbltouch >= 2) {
     clearTimeout(dbltouchtimeout)
     playPause()
+    setTimeout(() => {
+      ShowUi()      
+    }, 10);
   }
   dbltouchtimeout = setTimeout(() => {
     dbltouch = 0

@@ -356,12 +356,10 @@ function SkipTo() {
   }, 150);
   if(animationvalueone == 0) {
     animationvalueone = 1
-    skipforwardAnimation.style.display = 'flex'
     setTimeout(() => {
       skipforwardAnimation.style.opacity = '1'
     }, 10);
     setTimeout(() => {
-      skipforwardAnimation.style.display = 'none'
       skipforwardAnimation.style.opacity = '0'
       animationvalueone = 0
     }, 600);
@@ -376,12 +374,10 @@ function SkipBack() {
   }, 150);
   if(animationvaluetwo == 0) {
     animationvaluetwo = 1
-    skipBackwardAnimation.style.display = 'flex'
     setTimeout(() => {
       skipBackwardAnimation.style.opacity = '1'
     }, 10);
     setTimeout(() => {
-      skipBackwardAnimation.style.display = 'none'
       skipBackwardAnimation.style.opacity = '0'
       animationvaluetwo = 0
     }, 600);
@@ -554,7 +550,7 @@ function skiptouch(e) {
         skippedvalue  = skippedvalue + 1
         FAValue.innerHTML = skippedvalue
       }, 100);
-      videoContainer.classList.add('skipping-to')
+      skipforwardAnimation.style.opacity = '1'
     }, 300);
   } else if(touch.pageX < 100) {
     timeskipout = setTimeout(() => {
@@ -564,7 +560,7 @@ function skiptouch(e) {
         skippedvalue  = skippedvalue - 1
         BAValue.innerHTML = skippedvalue
       }, 100);
-      videoContainer.classList.add('skipping-back')
+      skipBackwardAnimation.style.opacity = '1'
     }, 300);
   } else {
   }
@@ -573,27 +569,39 @@ function skipend(e) {
   clearTimeout(timeskipout)
   clearInterval(timeskipinterval)
   skippedvalue  = 0
-  FAValue.innerHTML = 0
-  BAValue.innerHTML = 0
-  videoContainer.classList.remove('skipping-to')
-  videoContainer.classList.remove('skipping-back')
+  FAValue.innerHTML = SkipValue
+  BAValue.innerHTML = SkipValue
+  skipforwardAnimation.style.opacity = '0'
+  skipBackwardAnimation.style.opacity = '0'
+
 }
 let dbltouch = 0
 let dbltouchtimeout
 video.addEventListener('click', (e) => {
   dbltouch = dbltouch + 1
   if(dbltouch >= 2) {
+    console.log(e.x);
     clearTimeout(dbltouchtimeout)
-    playPause()
-    setTimeout(() => {
-      ShowUi()      
-    }, 10);
+    if( e.x <= video.clientWidth / 2 + 80 && e.x >= video.clientWidth / 2 - 80 ) {
+      playPause()
+      setTimeout(() => {
+        ShowUi()
+      }, 10);
+    } else if (e.x <= video.clientWidth / 4) {
+      SkipBack()
+      setTimeout(() => {
+        HideUi()
+      }, 10);
+    } else if (e.x >=video.clientWidth - video.clientWidth / 4) {
+      SkipTo()
+      setTimeout(() => {
+        HideUi()
+      }, 10);
+    }
   }
+  console.log(video.clientWidth - video.clientWidth / 4);
   dbltouchtimeout = setTimeout(() => {
     dbltouch = 0
   }, 300);
   console.log(dbltouch);
 })
-// if( e.x <= video.clientWidth / 2 + 50 && e.x >= video.clientWidth / 2 - 50 ) {
-//   playPause()
-// }

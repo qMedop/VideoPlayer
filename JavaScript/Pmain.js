@@ -490,21 +490,25 @@ function increaseSpeed() {
   };
   
   function ShowUi() {
-    ConrollsContaiener.style.opacity = '1'
-    ConrollsMContaiener.style.opacity = '1'
-    ConrollsContaiener.style.pointerEvents = 'all';
-    for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
-      ConrollsMContaienerbtns[i].style.pointerEvents = 'all';
-    }
-  clearTimeout(settime)
-  settime = setTimeout(() => {
-    if(video.paused == true) {
+    if(dbltouch >= 2) {
       
     } else {
-      HideUi()
-      ConrollsMContaienerValue = 0
+      ConrollsContaiener.style.opacity = '1'
+      ConrollsMContaiener.style.opacity = '1'
+      ConrollsContaiener.style.pointerEvents = 'all';
+      for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
+        ConrollsMContaienerbtns[i].style.pointerEvents = 'all';
+      }
+    clearTimeout(settime)
+    settime = setTimeout(() => {
+      if(video.paused == true) {
+        
+      } else {
+        HideUi()
+        ConrollsMContaienerValue = 0
+      }
+    }, 2000);
     }
-  }, 2000);
 }
 function HideUi() {
   ConrollsContaiener.style.opacity = '0'
@@ -533,10 +537,8 @@ let timeskipinterval
 let timeskipout
 video.addEventListener('touchstart' ,skiptouch)
 video.addEventListener('touchend' , skipend)
-function skiphold(e) {
-
-}
 let skippedvalue = 0
+let animation = 0
 function skiptouch(e) {
   var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
   var touch = evt.touches[0] || evt.changedTouches[0];
@@ -549,6 +551,7 @@ function skiptouch(e) {
         video.currentTime = video.currentTime + 1
         skippedvalue  = skippedvalue + 1
         FAValue.innerHTML = skippedvalue
+        animation = 1
       }, 100);
       skipforwardAnimation.style.opacity = '1'
     }, 300);
@@ -559,6 +562,7 @@ function skiptouch(e) {
         video.currentTime = video.currentTime - 1
         skippedvalue  = skippedvalue - 1
         BAValue.innerHTML = skippedvalue
+        animation = 1
       }, 100);
       skipBackwardAnimation.style.opacity = '1'
     }, 300);
@@ -571,9 +575,11 @@ function skipend(e) {
   skippedvalue  = 0
   FAValue.innerHTML = SkipValue
   BAValue.innerHTML = SkipValue
-  skipforwardAnimation.style.opacity = '0'
-  skipBackwardAnimation.style.opacity = '0'
-
+  if(animation == 1) {
+    skipforwardAnimation.style.opacity = '0'
+    skipBackwardAnimation.style.opacity = '0'
+  }
+  animation = 0
 }
 let dbltouch = 0
 let dbltouchtimeout
@@ -584,19 +590,10 @@ video.addEventListener('click', (e) => {
     clearTimeout(dbltouchtimeout)
     if( e.x <= video.clientWidth / 2 + 80 && e.x >= video.clientWidth / 2 - 80 ) {
       playPause()
-      setTimeout(() => {
-        ShowUi()
-      }, 10);
     } else if (e.x <= video.clientWidth / 4) {
       SkipBack()
-      setTimeout(() => {
-        HideUi()
-      }, 10);
     } else if (e.x >=video.clientWidth - video.clientWidth / 4) {
       SkipTo()
-      setTimeout(() => {
-        HideUi()
-      }, 10);
     }
   }
   console.log(video.clientWidth - video.clientWidth / 4);

@@ -590,6 +590,10 @@ video.addEventListener('click', (e) => {
     clearTimeout(dbltouchtimeout)
     if( e.x <= video.clientWidth / 2 + 80 && e.x >= video.clientWidth / 2 - 80 ) {
       playPause()
+      dbltouch = 0
+      setTimeout(() => {
+      ShowUi()
+      }, 10);
     } else if (e.x <= video.clientWidth / 4) {
       SkipBack()
     } else if (e.x >=video.clientWidth - video.clientWidth / 4) {
@@ -599,6 +603,6 @@ video.addEventListener('click', (e) => {
   console.log(video.clientWidth - video.clientWidth / 4);
   dbltouchtimeout = setTimeout(() => {
     dbltouch = 0
-  }, 300);
+  }, 200);
   console.log(dbltouch);
 })

@@ -341,14 +341,6 @@ videoContainer.addEventListener('click' , (e) => {
 })
 // video.addEventListener('dblclick' , skiptouch)
 
-// function skiptouch(e) {
-//   if(videoContainer.clientWidth - e.x < 100) {
-//     SkipTo()
-//   } else if(e.x < 100) {
-//     SkipBack()
-//   }
-//   console.log('object');
-// }
 
 // SKip
 let SkipValue = 5
@@ -403,7 +395,7 @@ settingsBtn.addEventListener('click', () => {
     OpenSettings()
   } else {
     ClsoeSettings()
-
+    
   }
 })
 function OpenSettings() {
@@ -427,7 +419,7 @@ function ClsoeSettings() {
   settime = setTimeout(() => {
     HideUi()
     ConrollsMContaienerValue = 0
-}, 2000);
+  }, 2000);
 }
 document.addEventListener('click', e => {
   if(settingsValue == 1) {
@@ -437,7 +429,7 @@ document.addEventListener('click', e => {
       ClsoeSettings()
     }
   }
-
+  
 })
 Skip.addEventListener('click', () => {
   if(SkipValue == 5) {
@@ -493,25 +485,25 @@ function increaseSpeed() {
     setTimeout(() => {
       increase.style.transform= "scale(1)";
     }, 150);  }
-}
-video.onwaiting = (event) => {
-  videoContainer.classList.add('loading')
-};
-video.onplaying = (event) => {
-  videoContainer.classList.remove('loading')
-};
-
-function ShowUi() {
-  ConrollsContaiener.style.opacity = '1'
-  ConrollsMContaiener.style.opacity = '1'
-  ConrollsContaiener.style.pointerEvents = 'all';
-  for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
-    ConrollsMContaienerbtns[i].style.pointerEvents = 'all';
   }
+  video.onwaiting = (event) => {
+    videoContainer.classList.add('loading')
+  };
+  video.onplaying = (event) => {
+    videoContainer.classList.remove('loading')
+  };
+  
+  function ShowUi() {
+    ConrollsContaiener.style.opacity = '1'
+    ConrollsMContaiener.style.opacity = '1'
+    ConrollsContaiener.style.pointerEvents = 'all';
+    for (let i = 0; i < ConrollsMContaienerbtns.length; i++) {
+      ConrollsMContaienerbtns[i].style.pointerEvents = 'all';
+    }
   clearTimeout(settime)
   settime = setTimeout(() => {
     if(video.paused == true) {
-
+      
     } else {
       HideUi()
       ConrollsMContaienerValue = 0
@@ -528,8 +520,8 @@ function HideUi() {
 }
 TimeLineContaienr.addEventListener('touchend', () => {
   settime = setTimeout(() => {
-      HideUi()
-      ConrollsMContaienerValue = 0
+    HideUi()
+    ConrollsMContaienerValue = 0
   }, 2000);
 })
 urluploadbtn.addEventListener('click' , () => {
@@ -540,3 +532,42 @@ urluploadbtn.addEventListener('click' , () => {
     urlvalue.value = ""
   }
 })
+
+let timeskipinterval
+let timeskipout
+video.addEventListener('touchstart' ,skiptouch)
+video.addEventListener('touchend' , skipend)
+function skiphold(e) {
+
+}
+
+function skiptouch(e) {
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch = evt.touches[0] || evt.changedTouches[0];
+  x = touch.pageX;
+  y = touch.pageY; 
+  if(videoContainer.clientWidth - touch.pageX < 100) {
+    timeskipout = setTimeout(() => {
+      e.preventDefault()
+      timeskipinterval = setInterval(() => {
+        video.currentTime = video.currentTime + 1
+        console.log(video.currentTime);
+      }, 100);
+    }, 300);
+    console.log('object');
+  } else if(touch.pageX < 100) {
+    timeskipout = setTimeout(() => {
+      e.preventDefault()
+      timeskipinterval = setInterval(() => {
+        video.currentTime = video.currentTime - 1
+        console.log(video.currentTime);
+      }, 100);
+    }, 300);
+  } else {
+    console.log('er');
+  }
+}
+function skipend(e) {
+  clearTimeout(timeskipout)
+  clearInterval(timeskipinterval)
+}

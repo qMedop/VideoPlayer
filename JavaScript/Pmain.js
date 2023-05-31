@@ -540,7 +540,7 @@ video.addEventListener('touchend' , skipend)
 function skiphold(e) {
 
 }
-
+let skippedvalue = 0
 function skiptouch(e) {
   var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
   var touch = evt.touches[0] || evt.changedTouches[0];
@@ -551,8 +551,10 @@ function skiptouch(e) {
       e.preventDefault()
       timeskipinterval = setInterval(() => {
         video.currentTime = video.currentTime + 1
-        console.log(video.currentTime);
+        skippedvalue  = skippedvalue + 1
+        FAValue.innerHTML = skippedvalue
       }, 100);
+      videoContainer.classList.add('skipping-to')
     }, 300);
     console.log('object');
   } else if(touch.pageX < 100) {
@@ -560,8 +562,10 @@ function skiptouch(e) {
       e.preventDefault()
       timeskipinterval = setInterval(() => {
         video.currentTime = video.currentTime - 1
-        console.log(video.currentTime);
+        skippedvalue  = skippedvalue - 1
+        BAValue.innerHTML = skippedvalue
       }, 100);
+      videoContainer.classList.add('skipping-back')
     }, 300);
   } else {
     console.log('er');
@@ -570,4 +574,10 @@ function skiptouch(e) {
 function skipend(e) {
   clearTimeout(timeskipout)
   clearInterval(timeskipinterval)
+  skippedvalue  = 0
+  FAValue.innerHTML = 0
+  BAValue.innerHTML = 0
+  videoContainer.classList.remove('skipping-to')
+  videoContainer.classList.remove('skipping-back')
+
 }

@@ -211,9 +211,9 @@ document.addEventListener('keydown', e => {
             }, 2000);
           }
           break;
-        // case "f12":
-        //   e.preventDefault() 
-        //   break;
+         case "f12":
+           e.preventDefault() 
+           break;
       }
     })
 const leadingZeroFormatter = new Intl.NumberFormat(undefined, {

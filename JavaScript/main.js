@@ -3,10 +3,28 @@ inputch.onchange = evt => {
   if (file) {
     blah.src = URL.createObjectURL(file)
     blahh.src = URL.createObjectURL(file)
-    document.querySelector('.video-container .content').style.display = 'none'
+    setTimeout(() => {
+      video.play()
+      setTimeout(() => {
+        HideUi()
+      }, 2000);
+    }, 300);
   }
   console.log(file.name);
-}
+  setTimeout(() => {
+    previewimgSize()
+  }, 200);
+  video.playbackRate = speedValue.innerHTML
+  }
+  urluploadbtn.addEventListener('click' , () => {
+    if(urlvalue.value.length == 0) {
+    } else {
+      blah.src = urlvalue.value
+      blahh.src = urlvalue.value
+      urlvalue.value = ""
+      video.play()
+    }
+  })
 const rangeInputs = document.querySelectorAll('input[type="range"]')
 function handleInputChange(e) {
   let target = e.target
@@ -16,13 +34,18 @@ function handleInputChange(e) {
   const min = target.min
   const max = target.max
   const val = target.value
-
   target.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%'
 }
-
 rangeInputs.forEach(input => {
   input.addEventListener('input', handleInputChange)
 })
+let AllButtons = document.querySelectorAll('button')
+for(let i = 0 ; i < AllButtons.length; i++) {
+  AllButtons[i].addEventListener('click' , (e) => {
+  setTimeout(() => {
+    AllButtons[i].blur()
+  }, 200);  })
+}
 const video = document.querySelector('.video-container #blah')
 const previewvideo = document.querySelector('.video-container #blahh')
 const playPausebtn = document.querySelector('.video-container .play-pause-btn')
@@ -40,57 +63,157 @@ const TimeLineContaienr = document.querySelector('.video-container .timeline-con
 const ConrollsContaiener = document.querySelector('.video-container .controls-container')
 const SkipForward = document.querySelector('.video-container .skip-forward')
 const SkipBackward = document.querySelector('.video-container .skip-backward')
-const SettingsContainer = document.querySelector('.video-container .settings .settings-option')
+const SettingsContainer = document.querySelector('.video-container  .settings-option')
 const skipBackwardAnimation = document.querySelector('.video-container .skipBackward-animation')
 const skipforwardAnimation  = document.querySelector('.video-container .skipforward-animation ')
-const PlayAnimation  = document.querySelector('.video-container .play-animation')
-const PauseAnimation  = document.querySelector('.video-container .pause-animation')
+const previewimgContainer  = document.querySelector('.video-container .preview-img-container')
+const VolumeRate = document.querySelector('.video-container .Volume-rate')
+let SkipBackwardBtn = document.querySelector('.video-container .center .skip-backward')
+let SkipForwardBtn = document.querySelector('.video-container .center .skip-forward')
 let buttons = document.querySelectorAll('button')
 let inputs = document.querySelectorAll('input')
-
-
-
+let tabtimeOut
 const videoContainer = document.querySelector('.video-container')
-
 playPausebtn.addEventListener('click', () => {
   playPause()
 })
-
 document.addEventListener('keydown', e => {
   switch (e.key.toLowerCase()) {
     case " ":
     case "k":
+      ClsoeSettings()
+      e.preventDefault()
       playPause()
-      ConrollsContaiener.style.opacity  = 1;
-      document.body.style.cursor = 'default'
-      ConrollsContaiener.style.pointerEvents = 'all';
-      clearTimeout(timeOut);
-      HideView()
-      break;
-    case "f":
-      toggleFullScreen()
-      break;
-    case "t":
-      toggleTheterMode()
-      break;
-    case "i":
-      toggleMiniPlayerMode()
-      break;
-      case "m":
-        toggleMute()
+      if(video.paused) {
+        clearTimeout(timeOut)
+        ViewUi()
+      } else {
+        setTimeout(() => {
+         HideUi()
+        }, 2000);
+      }
         break;
-      case "arrowright": 
-        SkipTo()
+      case "f":
+        ClsoeSettings()
+        e.preventDefault()
+        toggleFullScreen()
+        if(video.paused) {
+          clearTimeout(timeOut)
+          ViewUi()
+        } else {
+          setTimeout(() => {
+           HideUi()
+          }, 2000);
+        }
         break;
-      case "arrowleft": 
-        SkipBack()
+      case "t":
+        ClsoeSettings()
+        e.preventDefault()
+        toggleTheterMode()
+        if(video.paused) {
+          clearTimeout(timeOut)
+          ViewUi()
+        } else {
+          setTimeout(() => {
+           HideUi()
+          }, 2000);
+        }
         break;
-        case "arrowup": 
+      case "i":
+        if(video.paused) {
+          clearTimeout(timeOut)
+          ViewUi()
+        } else {
+          setTimeout(() => {
+           HideUi()
+          }, 2000);
+        }
+        ClsoeSettings()
+        e.preventDefault()
+        toggleMiniPlayerMode()
+        break;
+        case "m":
+          ClsoeSettings()
+          e.preventDefault()
+          toggleMute()
+          ShowVolumeText()
+        break;
+      case "arrowright":
+        ClsoeSettings()
+        if(video.paused) {
+
+        } else {
+          clearTimeout(timeOut)
+          clearTimeout(tabtimeOut)
+          ViewUi()
+          timeOut = setTimeout(() => {
+            HideUi()
+          }, 2000);
+        }
+        if(document.activeElement  === volumeSlider) {
+        } else {
+          e.preventDefault()
+            SkipTo()
+        }
+        break;
+        case "arrowleft":
+          ClsoeSettings()
+          if(video.paused) {
+
+          } else {
+            clearTimeout(timeOut)
+            clearTimeout(tabtimeOut)
+            ViewUi()
+            timeOut = setTimeout(() => {
+              HideUi()
+            }, 2000);
+          }
+          if(document.activeElement  === volumeSlider) {
+          } else {
+            e.preventDefault()
+              SkipBack()
+          }
+        break;
+      case "arrowup": 
+      ClsoeSettings()
+        e.preventDefault()
         increaseVolume()
         break;
-        case "arrowdown": 
+      case "arrowdown":
+        ClsoeSettings()
+        e.preventDefault() 
         decreaceVolume()
         break;
+      case ",":
+        ClsoeSettings()
+        e.preventDefault()
+        decreaseSpeed()
+        ShowSpeedText()
+        break;
+      case ".":
+        ClsoeSettings()
+         e.preventDefault()
+        increaseSpeed()
+        ShowSpeedText()
+        break;
+        case "tab":
+          ClsoeSettings()
+          ViewUi()
+          if(video.paused) {
+          } else {
+            clearTimeout(tabtimeOut)
+             tabtimeOut = setTimeout(() => {
+              HideUi()
+              for(let i = 0 ; i < AllButtons.length ; i++) {
+                AllButtons[i].blur()
+              }
+              volumeSlider.blur()
+            }, 2000);
+          }
+          break;
+        // case "f12":
+        //   e.preventDefault() 
+        //   break;
       }
     })
 const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
@@ -99,8 +222,11 @@ const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
 // TimeLine
 TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
 TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
-
-document.addEventListener('mousemove' , HandleTimeLine)
+document.addEventListener('mousemove' , e=> {
+  if(isScrubbing) {
+    HandleTimeLine(e)
+  }
+})
 TimeLineContaienr.addEventListener('click' , toggleScrubbing)
 document.addEventListener('mouseup', e=> {
   if(isScrubbing) {
@@ -138,33 +264,27 @@ function clcikk(e) {
   const rect = TimeLineContaienr.getBoundingClientRect()
   const percent = Math.min(Math.max(0,e.x - rect.x), rect.width) / rect.width
     video.currentTime = percent * video.duration
-
 }
 function HandleTimeLine(e) {
   const rect = TimeLineContaienr.getBoundingClientRect()
   const percent = Math.min(Math.max(0,e.x - rect.x), rect.width) / rect.width
   const percentt = percent * video.duration
+  let percentMax = (rect.width - previewimgContainer.clientWidth / 2) / rect.width
+  let percentLow =  1 - (rect.width - previewimgContainer.clientWidth / 2) / rect.width
   TimeLineContaienr.style.setProperty("--preview-position", percent)
   let percentTwo = percent
-  if (ConrollsContaiener.clientWidth > 1300){
-    console.log('object');
-    if(percent > 0.88) {
-      percentTwo = 0.88
-    } else if(percent < 0.12){
-      percentTwo = 0.12
+    if(percent > percentMax - 0.01) {
+      percentTwo = percentMax - 0.01
+    } else if(percent < percentLow + 0.01){
+      percentTwo = percentLow + 0.01
     }
-  } else if (ConrollsContaiener.clientWidth < 1200) {
-    if(percent > 0.86) {
-      percentTwo = 0.86
-    } else if(percent < 0.14){
-      percentTwo = 0.14
-    }
-  }
   TimeLineContaienr.style.setProperty("--preview-position-img", percentTwo)
   if (video.getAttribute('src') === '') {
     
   } else {
-    previewvideo.currentTime = percentt
+    if(video.currentTime >= 1) {
+      previewvideo.currentTime = percentt
+    }
     going.textContent = previewtime(percentt)
   }
   if(isScrubbing) {
@@ -181,29 +301,61 @@ function HandleTimeLine(e) {
     }
   }
   }
+
+//PlayPause
+
+const PlaySvgHTML = `      <svg class="play-icon" viewBox="0 0 384 512">
+<path style="fill: #f1f1f1"
+  d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z" />
+</svg>`
+const PauseSvgHTML = `      <svg style="margin-left: 0;" class="pause-icon" viewBox="0 0 320 512">
+<path style="fill: #f1f1f1"
+  d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
+</svg>`
 let PlayAnimationValue = 0
 let PasueAnimationValue = 0
+let PlayDiv = document.createElement('div')
+let PauseDiv = document.createElement('div')
+let playpausetimeout
+function PlayAnimation() {
+  if(PasueAnimationValue == 1) {
+    clearTimeout(playpausetimeout)
+    PauseDiv.remove()
+  }
+  PlayAnimationValue = 1
+  PlayDiv.classList.add('PlayPause')
+  PlayDiv.innerHTML = PlaySvgHTML
+  videoContainer.appendChild(PlayDiv)
+  playpausetimeout = setTimeout(() => {
+    PlayDiv.remove()
+    PlayAnimationValue = 0
+  }, 400);
+}
+function PauseAnimation() {
+  if(PlayAnimationValue == 1) {
+    clearTimeout(playpausetimeout)
+    PlayDiv.remove()
+  }
+  PasueAnimationValue = 1
+  PauseDiv.classList.add('PlayPause')
+  PauseDiv.innerHTML = PauseSvgHTML
+  videoContainer.appendChild(PauseDiv)
+  playpausetimeout = setTimeout(() => {
+    PauseDiv.remove()
+    PasueAnimationValue = 0
+  }, 400);
+}
 function playPause() {
   if (video.paused == true) {
     video.play()
-    if(PasueAnimationValue == 0) {
-      PasueAnimationValue = 1
-      PauseAnimation.style.display = 'flex'
-      setTimeout(() => {
-        PauseAnimation.style.display = 'none'
-          PasueAnimationValue = 0
-      }, 700);
-    }
+    timeOut = setTimeout(() => {
+      HideUi()
+    }, 2000);
+    PlayAnimation()
   } else {
     video.pause()
-    if(PlayAnimationValue == 0) {
-      PlayAnimationValue = 1
-      PlayAnimation.style.display = 'flex'
-      setTimeout(() => {
-          PlayAnimation.style.display = 'none'
-          PlayAnimationValue = 0
-      }, 700);
-    }
+    ViewUi()
+    PauseAnimation()
   }
 }
 video.addEventListener('pause', () => {
@@ -217,6 +369,9 @@ videoContainer.addEventListener('click', (e) => {
     playPause()
   }
 })
+
+//fullscreen
+
 videoContainer.addEventListener('dblclick', (e) => {
   if (e.target.toString() == "[object HTMLVideoElement]") {
     toggleFullScreen()
@@ -227,35 +382,58 @@ playPausebtn.addEventListener('focus', () => {
     playPausebtn.blur()
   }, 1500);
 })
-
 TheaterBtn.addEventListener('click', () => {
-  toggleTheterMode()
+  if(document.fullscreenElement == null) {
+    toggleTheterMode()
+    if(video.paused) {
+      clearTimeout(timeOut)
+      ViewUi()
+    } else {
+      setTimeout(() => {
+       HideUi()
+      }, 2000);
+    }
+  } else {
+    videoContainer.classList.toggle('full-screen')
+    toggleTheterMode()
+    document.exitFullscreen()
+  }
 })
-
 function toggleTheterMode() {
   videoContainer.classList.toggle('theater')
+  if(video.paused) {
+    clearTimeout(timeOut)
+    ViewUi()
+  } else {
+    setTimeout(() => {
+     HideUi()
+    }, 2000);
+  }
 }
-
 FullScreenBtn.addEventListener('click', () => {
   toggleFullScreen()
 })
-
 function toggleFullScreen() {
   if (document.fullscreenElement == null) {
-    videoContainer.requestFullscreen()
+    setTimeout(() => {
+      previewimgSize()
+    }, 50);
+    tr.requestFullscreen()
     if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
-    } else {
-      screen.orientation.lock('landscape');
     }
   } else {
+    setTimeout(() => {
+      previewimgSize()
+    }, 50);
     document.exitFullscreen()
-    screen.orientation.unlock('landscape');
   }
 }
-
 document.addEventListener('fullscreenchange', () => {
   videoContainer.classList.toggle('full-screen', document.fullscreenElement)
 })
+
+//miniplayer
+
 MiniPlayerBtn.addEventListener('click', () => {
   toggleMiniPlayerMode()
 })
@@ -272,35 +450,91 @@ video.addEventListener('enterpictureinpicture', () => {
 video.addEventListener('leavepictureinpicture', () => {
   videoContainer.classList.remove('mini-player')
 })
-
 MuteBtn.addEventListener('click', toggleMute)
 volumeSlider.addEventListener('input', e => {
   video.volume = e.target.value
   video.muted = e.target.value === 0
 })
+
+//Volume 
+
+const volumeHTML = `<div class="volume-svg">
+<svg width="64px" height="64px" viewBox="-14.4 -14.4 76.80 76.80" fill="none"
+xmlns="http://www.w3.org/2000/svg">
+<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+<g id="SVGRepo_iconCarrier">
+  <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect>
+  <path class="path-one"
+    d="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z"
+    fill="#2F88F" stroke="#f1f1f1" stroke-width="4" stroke-linejoin="round"></path>
+  <path class="path-two"
+    d="M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33"
+    stroke="#f1f1f1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path class="path-three"
+    d="M34.2358 41.1857C40.0835 37.6953 43.9999 31.305 43.9999 24C43.9999 16.8085 40.2042 10.5035 34.507 6.97906"
+    stroke="#f1f1f1" stroke-width="4" stroke-linecap="round"></path>
+  <g xmlns="http://www.w3.org/2000/svg" mask="url(#mask0)" class="g-mute">
+    <path d="M40.7351 20.2858L32.2498 28.7711" stroke="#f1f1f1" stroke-width="4" stroke-linecap="round"
+      stroke-linejoin="round" />
+    <path d="M32.2498 20.2858L40.735 28.7711" stroke="#f1f1f1" stroke-width="4" stroke-linecap="round"
+      stroke-linejoin="round" />
+  </g>
+</g>
+</svg>
+</div>
+<div id="VolumeText">100%</div>`
 let mutedViedo = 0
 let mutedViedoo = 0
-
-function increaseVolume() {
-  if(video.volume < 1 && mutedViedoo == 0) {
-    video.volume = video.volume + 0.1
-    mutedViedo = 0
-  }  if(video.volume < 0.1) {
-    video.volume = 0.1
-    mutedViedoo = 0
+let VolumeTextI
+let Volumetimeout
+let volumestatue = 0
+let VolumeDiv
+function ShowVolumeText() {
+  if(volumestatue == 0) {
+    volumestatue = 1
+    VolumeDiv = document.createElement('div')
+    VolumeDiv.classList.add('Volume-rate')
+    VolumeDiv.innerHTML = volumeHTML
+    videoContainer.appendChild(VolumeDiv)
+    VolumeText.innerHTML = Math.floor(video.volume * 100) + "%"
+    Volumetimeout = setTimeout(() => {
+      VolumeDiv.remove()
+    }, 1000);
+  } else {
+    clearTimeout(Volumetimeout)
+    VolumeDiv.remove()
+    volumestatue = 1
+    VolumeDiv = document.createElement('div')
+    VolumeDiv.classList.add('Volume-rate')
+    VolumeDiv.innerHTML = volumeHTML
+    videoContainer.appendChild(VolumeDiv)
+    VolumeText.innerHTML = Math.floor(video.volume * 100) + "%"
+    Volumetimeout = setTimeout(() => {
+      VolumeDiv.remove()
+    }, 1000);
   }
 }
-function decreaceVolume() {
-  if(video.volume >= 0 && mutedViedo == 0) {
-    video.volume = video.volume - 0.1
-    if(video.volume < 0.00000001) {
-      mutedViedo = 1
-      VolumeLvl = "muted"
-      
+function increaseVolume() {
+  if(video.volume < 1) {
+    if(video.volume >= 0.85) {
+      video.volume = 1
+    } else {
+      video.volume = video.volume + 0.1
     }
   }
-  videoContainer.dataset.volumelevel = VolumeLvl  
+  ShowVolumeText()
 }
+function decreaceVolume() {
+  if(video.volume >= 0) {
+    if(video.volume <= 0.15) {
+      video.volume = 0
+    } else {
+      video.volume = video.volume - 0.1
+    }
+  }
+  ShowVolumeText()
+  }
 let VolumeLvl
 video.addEventListener('volumechange', () => {
   volumeSlider.value = video.volume
@@ -314,14 +548,24 @@ video.addEventListener('volumechange', () => {
   }
   videoContainer.dataset.volumelevel = VolumeLvl
 })
-function toggleMute() {
-  video.muted = !video.muted
+volumeSlider.onmouseleave = () => {
+  volumeSlider.blur()
 }
+let VolumeMuteValue 
+function toggleMute() {
+  if(video.volume == 0) {
+     video.volume = VolumeMuteValue
+  } else {
+    VolumeMuteValue = video.volume
+    video.volume = 0
+  }
+}
+
+//Time
 
 video.addEventListener('loadeddata', () => {
   TotalTime.textContent = FormatTime(video.duration)
 })
-
 video.addEventListener('timeupdate', () => {
   CurrentTime.textContent = FormatTime(video.currentTime)
   const percent = video.currentTime / video.duration
@@ -337,105 +581,190 @@ function FormatTime(time) {
     return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
   }
 }
+
+//HideView Ui
+
+let check
 let timeOut
-const  HideView = () => {
+function HideUi() {
   if(video.paused) {
-  } else {
-    timeOut = setTimeout(() => {
-  ConrollsContaiener.style.opacity  = 0
-  ConrollsContaiener.style.pointerEvents = 'none';
-  document.body.style.cursor = 'none'
-}, 2000);
+
+  } else if(check == 1) {
+  } else if(check == 0){
+    ConrollsContaiener.style.opacity  = 0;
+    ConrollsContaiener.style.pointerEvents = 'none';
+    videoContainer.style.cursor = 'none'
   }
 }
-HideView()
-videoContainer.addEventListener('mousemove', () => {
+function ViewUi() {
   ConrollsContaiener.style.opacity  = 1;
-  document.body.style.cursor = 'default'
   ConrollsContaiener.style.pointerEvents = 'all';
-  clearTimeout(timeOut);
-  HideView()
+  videoContainer.style.cursor = 'default'
+}
+
+videoContainer.addEventListener('mouseenter', () => {
+  if(video.paused) {
+  } else {
+    ViewUi()
+  }
 })
-ConrollsContaiener.addEventListener('click', () => {
-  ConrollsContaiener.style.opacity  = 1;
-  ConrollsContaiener.style.pointerEvents = 'all';
-  document.body.style.cursor = 'default'
-  clearTimeout(timeOut);
-  HideView()
+videoContainer.addEventListener('mouseleave', () => {
+  if(video.paused) {
+  } else if(settingsValue == 0 && check == 0) {
+    HideUi()
+  } else {
+    clearTimeout(timeOut)
+  }
+})
+videoContainer.addEventListener('mousemove', () => {
+  if(video.paused) {
+  }else if(settingsValue == 0 && check == 0) {
+    clearTimeout(timeOut)
+    timeOut = setTimeout(() => {
+      HideUi()
+    }, 2000);  
+  } else {
+    clearTimeout(timeOut)
+  }
+
+})
+videoContainer.addEventListener('mousemove', () => {
+    ViewUi()
+})
+video.addEventListener('click' , () => {
+  if(video.paused) {
+    clearTimeout(timeOut)
+    ViewUi()
+  }else if(settingsValue == 0 && check == 0) {
+      setTimeout(() => {
+      HideUi()
+      }, 2000);
+    } else {
+    clearTimeout(timeOut)
+  }
+})
+  for(let i = 0 ; i < AllButtons.length ; i++) {
+    AllButtons[i].addEventListener('mouseenter' , () => {
+     check = 1
+   })
+   AllButtons[i].addEventListener('mouseleave' , () => {
+    check = 0
+  })
+ }
+TimeLineContaienr.addEventListener('mouseenter' ,() => {
+  check = 1
+})
+TimeLineContaienr.addEventListener('mouseleave' ,() => {
+  check = 0
 })
 
 // SKip
+
 let SkipValue = 5
+
+//skipTo
+
+let SkipForwaedContent = `<div class="svgs">
+<svg class="s" viewBox="0 0 256 512">
+  <path
+    d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
+</svg>
+<svg class="b" viewBox="0 0 256 512">
+  <path
+    d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
+</svg>
+<svg class="c" viewBox="0 0 256 512">
+  <path
+    d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
+</svg>
+</div>`
 SkipForward.addEventListener('click' , SkipTo)
-SkipBackward.addEventListener('click' , SkipBack)
 
 let animationvalueone = 0
+let skip
+let skipt
+
 function SkipTo() {
   video.currentTime = video.currentTime + SkipValue
-  document.querySelector('.video-container .center .skip-forward').style.transform= "scale(0.96)";
+  let div = document.createElement('div')
+  div.classList.add('divSkip')
+  div.classList.toggle('skipforward-animation')
+  videoContainer.appendChild(div)
+  div.innerHTML = SkipForwaedContent
   setTimeout(() => {
-    document.querySelector('.video-container .center .skip-forward').style.transform= "scale(1)";
-  }, 150);
-  if(animationvalueone == 0) {
-    animationvalueone = 1
-    skipforwardAnimation.style.display = 'flex'
-    setTimeout(() => {
-      skipforwardAnimation.style.opacity = '1'
-    }, 10);
-    setTimeout(() => {
-      skipforwardAnimation.style.display = 'none'
-      skipforwardAnimation.style.opacity = '0'
-      animationvalueone = 0
-    }, 600);
-  }
+    div.remove()
+  }, 900);
+
+  scaleInOut(SkipForwardBtn)
 }
+function SkipToStyleR() {
+  skipforwardAnimation.style.display = 'flex'
+}
+function SkipToStyleH() {
+  skipforwardAnimation.style.display = 'none'
+}
+
+//Skip Back
+
+SkipBackward.addEventListener('click' , SkipBack)
+
 let animationvaluetwo = 0
+let skipp
+
 function SkipBack() {
   video.currentTime =  video.currentTime - SkipValue
-  document.querySelector('.video-container .center .skip-backward').style.transform= "scale(0.96)";
+  let div = document.createElement('div')
+  div.classList.add('divSkip')
+  div.classList.toggle('skipBackward-animation')
+  videoContainer.appendChild(div)
+  div.innerHTML = SkipForwaedContent
   setTimeout(() => {
-    document.querySelector('.video-container .center .skip-backward').style.transform= "scale(1)";
-  }, 150);
-  if(animationvaluetwo == 0) {
-    animationvaluetwo = 1
-    skipBackwardAnimation.style.display = 'flex'
-    setTimeout(() => {
-      skipBackwardAnimation.style.opacity = '1'
-    }, 10);
-    setTimeout(() => {
-      skipBackwardAnimation.style.display = 'none'
-      skipBackwardAnimation.style.opacity = '0'
-      animationvaluetwo = 0
-    }, 600);
-  }
+    div.remove()
+  }, 900);
+
+  scaleInOut(SkipBackwardBtn)
+}
+function SkipBackStyleR() {
+  skipBackwardAnimation.style.display = 'flex'
+}
+function SkipBackStyleH() {
+  skipBackwardAnimation.style.display = 'none'
 }
 
 //Settings 
+
 let settingsValue = 0
 settingsBtn.addEventListener('click', () => {
   if(settingsValue == 0) {
     OpenSettings()
+    clearTimeout(tabtimeOut)
+    clearTimeout(timeOut)
+    ViewUi()
   } else {
     ClsoeSettings()
   }
 })
 function OpenSettings() {
+  previewimgContainer.style.display = 'none'
+  going.style.opacity = '0'
   setTimeout(() => {
     settingsValue = 1
   }, 10);
-  settingsBtn.style.transform = 'rotate(58deg)'
-  SettingsContainer.style.display = 'block'
+  settingsBtnSvg.style.transform = 'rotate(58deg)'
+  SettingsContainer.style.display = 'flex'
   setTimeout(() => {
     SettingsContainer.style.opacity = '1'
   }, 10);
 }
 function ClsoeSettings() {
   settingsValue = 0
-  settingsBtn.style.transform = 'rotate(0deg)'
+  settingsBtnSvg.style.transform = 'rotate(1deg)'
   SettingsContainer.style.opacity = '0'
   setTimeout(() => {
     SettingsContainer.style.display = 'none'
   }, 150);
+  previewimgContainer.style.display = 'flex'
+  going.style.opacity = '1'
 }
 document.addEventListener('click', e => {
   if(settingsValue == 1) {
@@ -444,28 +773,33 @@ document.addEventListener('click', e => {
       ClsoeSettings()
     }
   }
-
 })
+
+//Switch Skip Value
+
 Skip.addEventListener('click', () => {
   if(SkipValue == 5) {
     SkipValue = 10
     SkipValueHtml.innerHTML = SkipValue
-    BAValue.innerHTML = SkipValue
-    FAValue.innerHTML = SkipValue
+    Value5[0].style.display = 'none'
+    Value10[0].style.display = 'block'
+    Value5[1].style.display = 'none'
+    Value10[1].style.display = 'block'
   } else {
     SkipValue = 5
     SkipValueHtml.innerHTML = SkipValue
-    BAValue.innerHTML = SkipValue
-    FAValue.innerHTML = SkipValue
-  }
-  Skip.style.transform= "scale(0.96)";
-  setTimeout(() => {
-    Skip.style.transform= "scale(1)";
-  }, 150);
+    Value5[0].style.display = 'block'
+    Value10[0].style.display = 'none'
+    Value5[1].style.display = 'block'
+    Value10[1].style.display = 'none'
+  } 
+scaleInOut(Skip)
 })
 
-let loopStatue
+  
+//Loop
 
+let loopStatue
 Loop.addEventListener('click', () => {
   if(video.loop == false) {
     video.loop = true
@@ -474,65 +808,129 @@ Loop.addEventListener('click', () => {
     video.loop = false
     LoopValue.innerHTML = 'off'
   }
-  Loop.style.transform= "scale(0.96)";
-  setTimeout(() => {
-    Loop.style.transform= "scale(1)";
-  }, 150);
+scaleInOut(Loop)
 })
 
-decrease.addEventListener('click' , decreaseSpeed)
-increase.addEventListener('click' , increaseSpeed)
-function decreaseSpeed() {
-  if(video.playbackRate > 0.25) {
-    video.playbackRate = video.playbackRate - 0.25
-    speedValue.innerHTML =  video.playbackRate
-    decrease.style.transform= "scale(0.96)";
-    setTimeout(() => {
-      decrease.style.transform= "scale(1)";
-    }, 150);
+//Speed
+const speedHTML = `<div class="speed-svg">
+<svg width="64px" height="64px" viewBox="0 0 48 48" fill="#000000"
+stroke="#000000" stroke-width="3.216">
+<g   id="SVGRepo_iconCarrier">
+  <defs >
+    <style>
+      .a {
+        fill: none;
+        stroke: #f1f1f1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <path class="a" d="M34.6282,24.0793a14.7043,14.7043,0,0,0-22.673,1.7255"></path>
+  <path  class="a" d="M43.5,20.5846a23.8078,23.8078,0,0,0-39,0"></path>
+  <path  class="a" d="M43.5,20.5845,22.0169,29.0483a5.5583,5.5583,0,1,0,6.2116,8.7785l.0153.0206Z">
+  </path>
+</g>
+</svg>
+</div>
+<div id="SpeedText">1</div>`
+let speedStatue = 0
+let speeddiv
+let speedtimeout
+function ShowSpeedText() {
+  if(speedStatue == 0) {
+    speedStatue = 1
+    speeddiv = document.createElement('div')
+    speeddiv.classList.add('Speed-rate')
+    speeddiv.innerHTML = speedHTML
+    videoContainer.appendChild(speeddiv)
+    SpeedText.innerHTML = video.playbackRate 
+    speedtimeout = setTimeout(() => {
+      speeddiv.remove()
+    }, 1000);
+  } else {
+    clearTimeout(speedtimeout)
+    speeddiv.remove()
+    speedStatue = 1
+    speeddiv = document.createElement('div')
+    speeddiv.classList.add('Speed-rate')
+    speeddiv.innerHTML = speedHTML
+    videoContainer.appendChild(speeddiv)
+    SpeedText.innerHTML = video.playbackRate 
+    speedtimeout = setTimeout(() => {
+      speeddiv.remove()
+    }, 1000);
   }
 }
+//increseSpeed
+
+increase.addEventListener('click' , increaseSpeed)
+
 function increaseSpeed() { 
   if(video.playbackRate < 3) {
     video.playbackRate = video.playbackRate + 0.25
     speedValue.innerHTML =  video.playbackRate
-    increase.style.transform= "scale(0.9)";
-    setTimeout(() => {
-      increase.style.transform= "scale(1)";
-    }, 150);  }
+  scaleInOut(increase)
+  }
 }
 
-urluploadbtn.addEventListener('click' , () => {
-  if(urlvalue.value.length == 0) {
-  } else {
-    blah.src = urlvalue.value
-    blahh.src = urlvalue.value
-    urlvalue.value = ""
+//decreseSpeed
+
+decrease.addEventListener('click' , decreaseSpeed)
+function decreaseSpeed() {
+  if(video.playbackRate > 0.25) {
+    video.playbackRate = video.playbackRate - 0.25
+    speedValue.innerHTML =  video.playbackRate
+    scaleInOut(decrease)
   }
-})
+}
+
+//scale Animation 
+
+function scaleInOut(element) {
+  element.style.transform= "scale(0.96)";
+  setTimeout(() => {
+    element.style.transform= "scale(1)";
+  }, 150);
+}
+
+//loading
+
 video.onwaiting = (event) => {
   videoContainer.classList.add('loading')
 };
 video.onplaying = (event) => {
   videoContainer.classList.remove('loading')
 };
-document.addEventListener('contextmenu' ,e => {
-  e.preventDefault()
-})
-document.onkeydown = (e) => {
-  if (e.key == 123) {
-      e.preventDefault();
-  }
-  if (e.ctrlKey && e.shiftKey && e.key == 'I') {
-      e.preventDefault();
-  }
-  if (e.ctrlKey && e.shiftKey && e.key == 'C') {
-      e.preventDefault();
-  }
-  if (e.ctrlKey && e.shiftKey && e.key == 'J') {
-      e.preventDefault();
-  }
-  if (e.ctrlKey && e.key == 'U') {
-      e.preventDefault();
-  }
-};
+
+//resize
+  
+window.onresize = previewimgSize
+previewimgSize()
+function previewimgSize() {
+  previewimgContainer.style.aspectRatio = video.videoWidth / video.videoHeight
+  previewimgContainer.style.height = videoContainer.clientHeight / 5 + "px"
+}
+
+
+//////////////////////
+  document.addEventListener('contextmenu' ,e => {
+    e.preventDefault()
+  })
+  document.onkeydown = (e) => {
+    if (e.key == 123) {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && e.shiftKey && e.key == 'I') {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && e.shiftKey && e.key == 'C') {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && e.shiftKey && e.key == 'J') {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && e.key == 'U') {
+        e.preventDefault();
+    }
+  };

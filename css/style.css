@@ -392,7 +392,7 @@ body {
   height: 250%;
   top: 50%;
   right: calc(100% - var(--progress-position) * 100%) ;
-  background-color: #006358;
+  background-color: #f1f1f1;
   border-radius: 50%;
   transition: width 150ms linear, height 150ms linear;
   -webkit-border-radius: 50%;

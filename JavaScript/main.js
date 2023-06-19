@@ -12,6 +12,7 @@ inputch.onchange = evt => {
   }
   console.log(file.name);
   let div = document.createElement("div")
+  div.style.width = "100%"
   div.innerHTML = file.name
   document.body.appendChild(div)
   setTimeout(() => {

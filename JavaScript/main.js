@@ -11,6 +11,9 @@ inputch.onchange = evt => {
     }, 300);
   }
   console.log(file.name);
+  let div = document.createElement("div")
+  div.innerHTML = file.name
+  document.body.appendChild(div)
   setTimeout(() => {
     previewimgSize()
   }, 200);
@@ -70,7 +73,7 @@ const previewimgContainer  = document.querySelector('.video-container .preview-i
 const VolumeRate = document.querySelector('.video-container .Volume-rate')
 let SkipBackwardBtn = document.querySelector('.video-container .center .skip-backward')
 let SkipForwardBtn = document.querySelector('.video-container .center .skip-forward')
-let buttons = document.querySelectorAll('button')
+let buttons = document.querySelectorAll('.video-container button')
 let inputs = document.querySelectorAll('input')
 let tabtimeOut
 const videoContainer = document.querySelector('.video-container')
@@ -211,38 +214,46 @@ document.addEventListener('keydown', e => {
             }, 2000);
           }
           break;
-         case "f12":
-           e.preventDefault() 
-           break;
+        // case "f12":
+        //   e.preventDefault() 
+        //   break;
       }
     })
 const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
       minimumIntegerDigits: 2,
     })
 // TimeLine
-TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
-TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
-document.addEventListener('mousemove' , e=> {
-  if(isScrubbing) {
-    HandleTimeLine(e)
-  }
-})
-TimeLineContaienr.addEventListener('click' , toggleScrubbing)
-document.addEventListener('mouseup', e=> {
-  if(isScrubbing) {
-    toggleScrubbing(e)
-  }
-})
-document.addEventListener('mouseup', e=> {
-  if(isScrubbing) {
-    HandleTimeLine(e)
-  }
-})
-document.addEventListener('moousemove', e=> {
-  if(isScrubbing) {
-    HandleTimeLine(e)
-  }
-})
+if (
+  navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/iPhone/i)
+) {
+
+} else {
+  TimeLineContaienr.addEventListener('mousemove' , HandleTimeLine)
+  TimeLineContaienr.addEventListener('mousedown' , toggleScrubbing)
+  document.addEventListener('mousemove' , e=> {
+    if(isScrubbing) {
+      HandleTimeLine(e)
+    }
+  })
+  TimeLineContaienr.addEventListener('click' , toggleScrubbing)
+  document.addEventListener('mouseup', e=> {
+    if(isScrubbing) {
+      toggleScrubbing(e)
+    }
+  })
+  document.addEventListener('mouseup', e=> {
+    if(isScrubbing) {
+      HandleTimeLine(e)
+    }
+  })
+  document.addEventListener('moousemove', e=> {
+    if(isScrubbing) {
+      HandleTimeLine(e)
+    }
+  })
+
+}
 let isScrubbing = false
 let wasPassed 
 function toggleScrubbing(e) {
@@ -354,7 +365,7 @@ function playPause() {
     PlayAnimation()
   } else {
     video.pause()
-    ViewUi()
+    clearTimeout(mobiletimeout)
     PauseAnimation()
   }
 }
@@ -366,7 +377,13 @@ video.addEventListener('play', () => {
 })
 videoContainer.addEventListener('click', (e) => {
   if (e.target.toString() == "[object HTMLVideoElement]") {
-    playPause()
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+    } else {
+      playPause()
+    }
   }
 })
 
@@ -374,7 +391,13 @@ videoContainer.addEventListener('click', (e) => {
 
 videoContainer.addEventListener('dblclick', (e) => {
   if (e.target.toString() == "[object HTMLVideoElement]") {
-    toggleFullScreen()
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+    } else {
+      toggleFullScreen()
+    }
   }
 })
 playPausebtn.addEventListener('focus', () => {
@@ -414,13 +437,32 @@ FullScreenBtn.addEventListener('click', () => {
   toggleFullScreen()
 })
 function toggleFullScreen() {
-  if (document.fullscreenElement == null) {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+    if (document.fullscreenElement == null) {
+      setTimeout(() => {
+        previewimgSize()
+      }, 50);
+      videoContainer.requestFullscreen()
+      if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
+      } else {
+        screen.orientation.lock('landscape');
+      }
+    } else {
+      setTimeout(() => {
+        previewimgSize()
+      }, 50);
+      document.exitFullscreen()
+      screen.orientation.unlock('landscape');
+
+    }
+  } else if (document.fullscreenElement == null) {
     setTimeout(() => {
       previewimgSize()
     }, 50);
     tr.requestFullscreen()
-    if(video.videoWidth / video.videoHeight >= 0.4 && video.videoWidth / video.videoHeight <= 1) {
-    }
   } else {
     setTimeout(() => {
       previewimgSize()
@@ -569,7 +611,17 @@ video.addEventListener('loadeddata', () => {
 video.addEventListener('timeupdate', () => {
   CurrentTime.textContent = FormatTime(video.currentTime)
   const percent = video.currentTime / video.duration
-  TimeLineContaienr.style.setProperty("--progress-position", percent)
+  if(ismovingtimeline == 1) {
+
+  } else {
+    TimeLineContaienr.style.setProperty("--progress-position", percent)
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+      TimeLineContaienr.style.setProperty("--preview-position", percent)
+    }
+  }
 })
 function FormatTime(time) {
   const s = Math.floor(time % 60)
@@ -584,8 +636,9 @@ function FormatTime(time) {
 
 //HideView Ui
 
-let check
+let check = 0
 let timeOut
+let mobilecheck = 0
 function HideUi() {
   if(video.paused) {
 
@@ -594,55 +647,104 @@ function HideUi() {
     ConrollsContaiener.style.opacity  = 0;
     ConrollsContaiener.style.pointerEvents = 'none';
     videoContainer.style.cursor = 'none'
+    mobilecheck = 0
   }
 }
 function ViewUi() {
   ConrollsContaiener.style.opacity  = 1;
   ConrollsContaiener.style.pointerEvents = 'all';
   videoContainer.style.cursor = 'default'
+  mobilecheck = 1
 }
 
 videoContainer.addEventListener('mouseenter', () => {
-  if(video.paused) {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
   } else {
-    ViewUi()
+    if(video.paused) {
+    } else {
+      ViewUi()
+    }
   }
 })
 videoContainer.addEventListener('mouseleave', () => {
-  if(video.paused) {
-  } else if(settingsValue == 0 && check == 0) {
-    HideUi()
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
   } else {
-    clearTimeout(timeOut)
+    if(video.paused) {
+    } else if(settingsValue == 0 && check == 0) {
+      HideUi()
+    } else {
+      clearTimeout(timeOut)
+    }
   }
 })
 videoContainer.addEventListener('mousemove', () => {
-  if(video.paused) {
-  }else if(settingsValue == 0 && check == 0) {
-    clearTimeout(timeOut)
-    timeOut = setTimeout(() => {
-      HideUi()
-    }, 2000);  
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
   } else {
-    clearTimeout(timeOut)
+    if(video.paused) {
+    }else if(settingsValue == 0 && check == 0) {
+      clearTimeout(timeOut)
+      timeOut = setTimeout(() => {
+        HideUi()
+      }, 2000);  
+    } else {
+      clearTimeout(timeOut)
+    }
   }
 
 })
 videoContainer.addEventListener('mousemove', () => {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+  } else {
     ViewUi()
-})
-video.addEventListener('click' , () => {
-  if(video.paused) {
-    clearTimeout(timeOut)
-    ViewUi()
-  }else if(settingsValue == 0 && check == 0) {
-      setTimeout(() => {
-      HideUi()
-      }, 2000);
-    } else {
-    clearTimeout(timeOut)
   }
 })
+video.addEventListener('click' , () => {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+  } else {
+    if(video.paused) {
+      clearTimeout(timeOut)
+      ViewUi()
+    }else if(settingsValue == 0 && check == 0) {
+        setTimeout(() => {
+        HideUi()
+        }, 2000);
+      } else {
+      clearTimeout(timeOut)
+    }
+  }
+})
+if (
+  navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/iPhone/i)
+) {
+  for(let i = 0 ; i < AllButtons.length ; i++) {
+    AllButtons[i].addEventListener('click' , () => {
+      clearTimeout(mobiletimeout)
+      if(video.paused) {
+
+      } else {
+        mobiletimeout = setTimeout(() => {
+          mHideUi()
+        }, 2000);
+      }
+   })
+ }
+} else {
   for(let i = 0 ; i < AllButtons.length ; i++) {
     AllButtons[i].addEventListener('mouseenter' , () => {
      check = 1
@@ -651,12 +753,411 @@ video.addEventListener('click' , () => {
     check = 0
   })
  }
+}
 TimeLineContaienr.addEventListener('mouseenter' ,() => {
-  check = 1
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+  } else {
+    check = 1
+  }
 })
 TimeLineContaienr.addEventListener('mouseleave' ,() => {
-  check = 0
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+  } else {
+    check = 0
+  }
 })
+
+//viewhide mobile 
+function mViewUi() {
+  ConrollsContaiener.style.opacity  = 1;
+  ConrollsContaiener.style.pointerEvents = 'all';
+  videoContainer.style.cursor = 'default'
+  mobilecheck = 1
+}
+function mHideUi() {
+  ConrollsContaiener.style.opacity  = 0;
+  ConrollsContaiener.style.pointerEvents = 'none';
+  videoContainer.style.cursor = 'none'
+  mobilecheck = 0
+}
+
+let mobiletimeout
+if (
+  navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/iPhone/i)
+) {
+  videoContainer.addEventListener('click', (e) => {
+    setTimeout(() => {
+      if( dbtouch == 0) {
+        if(mobilecheck == 0) {
+          clearTimeout(mobiletimeout)
+          mViewUi()
+          if(video.paused) {
+          } else {
+            mobiletimeout = setTimeout(() => {
+              mHideUi()
+            }, 2000);
+          }
+      } else {
+        if (e.target.toString() == '[object HTMLVideoElement]') {
+          clearTimeout(mobiletimeout)
+          mHideUi()
+        }
+      }
+      }
+    }, 200);
+  })
+}
+
+// mobile timeline
+
+if (
+  navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/iPhone/i)
+) {
+  TimeLineContaienr.addEventListener('touchmove' , mHandleTimeLine)
+  TimeLineContaienr.addEventListener('touchstart' , mHandleTimeLine)
+  TimeLineContaienr.addEventListener('touchend' , mtoggleScrubbing)
+  
+  TimeLineContaienr.addEventListener('touchstart' , () => {
+    videoContainer.classList.toggle('scrubbing')
+  })
+  going.addEventListener('touchmove' , mHandleTimeLine)
+  going.addEventListener('touchstart' , mHandleTimeLine)
+  going.addEventListener('touchstart' , () => {
+    document.body.style.overflow = 'hidden'
+  })
+  going.addEventListener('touchend' , () => {
+    document.body.style.overflow = 'auto'
+    mobiletimeout = setTimeout(() => {
+      HideUi()
+    }, 2000);
+  })
+  TimeLineContaienr.addEventListener('touchstart' , () => {
+    document.body.style.overflow = 'hidden'
+  })
+  TimeLineContaienr.addEventListener('touchend' , () => {
+    document.body.style.overflow = 'auto'
+    mobiletimeout = setTimeout(() => {
+      HideUi()
+    }, 2000);
+  })
+  document.addEventListener('touchmove', e=> {
+    if(isScrubbing) {
+      mHandleTimeLine(e)
+    }
+  })
+
+} 
+
+
+let misScrubbing = false
+let mwasPassed 
+let ismovingtimeline = 0
+function mtoggleScrubbing(e) {
+  ismovingtimeline = 0
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch = evt.touches[0] || evt.changedTouches[0];
+  x = touch.pageX;
+  y = touch.pageY; 
+  const rect = TimeLineContaienr.getBoundingClientRect()
+  const percent = Math.min(Math.max(0,x - rect.x), rect.width) / rect.width
+  misScrubbing = (e.buttons & 1) === 1
+  videoContainer.classList.toggle("scrubbing", misScrubbing)
+  if(misScrubbing) {
+    mwasPassed = video.paused
+    video.pause()
+  } else {
+    video.currentTime = percent * video.duration
+    if(!mwasPassed) {
+      video.play()
+    }
+  }
+  clearTimeout(mobiletimeout)
+}
+function mHandleTimeLine(e) {
+  ismovingtimeline = 1
+  var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+  var touch = evt.touches[0] || evt.changedTouches[0];
+  x = touch.pageX;
+  y = touch.pageY; 
+  const rect = TimeLineContaienr.getBoundingClientRect()
+  const percent = Math.min(Math.max(0,x - rect.x), rect.width) / rect.width
+  const percentt = percent * video.duration
+  let percentMax = (rect.width - previewimgContainer.clientWidth / 2) / rect.width
+  let percentLow =  1 - (rect.width - previewimgContainer.clientWidth / 2) / rect.width
+  let percentTwo = percent 
+  TimeLineContaienr.style.setProperty("--progress-position", percent)
+  if(percent > percentMax - 0.01) {
+    percentTwo = percentMax - 0.01
+  } else if(percent < percentLow + 0.01){
+    percentTwo = percentLow + 0.01
+  }
+  TimeLineContaienr.style.setProperty("--preview-position-img", percentTwo)
+  if (video.getAttribute('src') === '') {
+    
+  } else {
+    going.textContent = previewtime(percentt)
+    previewvideo.currentTime = percentt
+  }
+  if(misScrubbing) {
+    TimeLineContaienr.style.setProperty("--preview-position", percent)
+    e.preventDefault()
+  }
+  function previewtime(time) {
+    const s = Math.floor(time % 60)
+    const m = Math.floor(time / 60) % 60
+    const h = Math.floor(time / 3600)
+    if (h === 0) {
+      return `${m}:${leadingZeroFormatter.format(s)}`
+    }else if (h !== 0) {
+      return `${h}:${leadingZeroFormatter.format(m)}:${leadingZeroFormatter.format(s)}`
+    }
+  }
+  clearTimeout(mobiletimeout)
+}
+
+//mobile interact 
+
+let dbtouch = 0
+let dbtouchtimeout
+let holdtouch = 0
+let holdtouch2 = 0
+let holdtouchtimeout
+let holdtoucinterval
+let holdplayrate
+let waspausedhold
+let holddivl = document.createElement('div')
+holddivl.classList.add('holdskipl')
+let holddivr = document.createElement('div')
+holddivr.classList.add('holdskipr')
+if (
+  navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/iPhone/i)
+) {
+  video.addEventListener('dblclick', (e) => {
+    clearTimeout(dbtouchtimeout)
+    dbtouch = 1
+    if(  e.x <=  (video.clientWidth - video.clientWidth / 2 ) + video.clientWidth / 4  && e.x >= (video.clientWidth - video.clientWidth / 2 ) - video.clientWidth / 4 ) {
+      playPause()
+      dbltouch = 0
+    } else if (e.x <= video.clientWidth / 4) {
+      SkipBack()
+    } else if (e.x >=video.clientWidth - video.clientWidth / 4) {
+      SkipTo()
+    }
+    dbtouchtimeout = setTimeout(() => {
+      dbtouch = 0
+    }, 600);
+  })
+  videoContainer.addEventListener('touchstart', (e) => {
+     waspausedhold = 0
+    if (e.target.toString() == "[object HTMLVideoElement]") {
+      var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+      var touch = evt.touches[0] || evt.changedTouches[0];
+      x = touch.pageX;
+      y = touch.pageY;
+      if(ismovingall == 0) {
+        if(x >= video.clientWidth - video.clientWidth / 4) {
+          let timeskipped = video.currentTime
+          holdtouchtimeout = setTimeout(() => {
+            ismovingall = 1
+            if (video.paused) {
+              waspausedhold = 1
+              video.muted = true
+              video.play()
+            }
+            holdtouch = 1
+            videoContainer.appendChild(holddivl)
+            holdtoucinterval = setInterval(() => {
+              holddivl.innerHTML = "+" + Math.floor(timeskipped - video.currentTime).toString().slice(1) + "s"
+            }, 100);
+            setTimeout(() => {
+              holddivl.style.opacity = '1'
+            }, 10);
+            holdplayrate = video.playbackRate
+            video.playbackRate = video.playbackRate + 3
+            document.body.style.overflow = 'hidden'
+          }, 500);
+        }
+      }
+    }
+  })
+  videoContainer.addEventListener('touchend', (e) => {
+    clearInterval(holdtoucinterval)
+    clearTimeout(holdtouchtimeout)
+    holdtouch2 = 0
+    ismovingall = 0
+    ismovingh = 0
+    if(holdtouch == 1) {
+      if (waspausedhold == 1) {
+        waspausedhold = 0
+        video.pause()
+        video.muted = false
+      }
+      holddivl.style.opacity = '0'
+      holdtouch = 0
+      video.playbackRate = holdplayrate
+      document.body.style.overflow = 'auto'
+      setTimeout(() => {
+        holddivl.innerHTML = 0
+        holddivl.remove()
+      }, 500);
+
+    }
+    
+  })
+  videoContainer.addEventListener('touchstart', (e) => {
+    if (e.target.toString() == "[object HTMLVideoElement]") {
+      var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+      var touch = evt.touches[0] || evt.changedTouches[0];
+      x = touch.pageX;
+      y = touch.pageY;
+      const rect = videoContainer.getBoundingClientRect()
+      const percent = Math.min(Math.max(0,y - rect.y), rect.height) / rect.height
+      currentpercent = percent
+      currentx = x
+      currenty = y
+      currentvideotime = video.currentTime
+      currentvideoVolume = video.volume
+      if(ismovingall == 0) {
+        if(x <= video.clientWidth / 4) {
+          let timeskipped = video.currentTime
+          holdtouchtimeout = setTimeout(() => {
+            ismovingall = 1
+            holdtouch2 = 1
+            document.body.style.overflow = 'hidden'
+            holdtoucinterval = setInterval(() => {
+              video.currentTime = video.currentTime - 1
+              holddivr.innerHTML = "-" + Math.floor(timeskipped - video.currentTime) + "s"
+            }, 300);
+            videoContainer.appendChild(holddivr)
+            setTimeout(() => {
+              holddivr.style.opacity = '1'
+            }, 10);
+          }, 500);
+        }
+      }
+    }
+  })
+  let currentx
+  let currenty
+  let currentpercent
+  let ismoving = 0
+  let ismovingall = 0
+  let ismovingh = 0
+  let currentvideotime
+  let currentvideoVolume
+  let ismovingsound = 0
+  let ouchmovecheck = 0
+  let popuptimeHTML = `  <div id="pcureenttime">00:00</div>
+  /
+  <div id="ptotalTime">00:00</div>`
+  let popuptime = document.createElement('div')
+  popuptime.classList.add('pduration-container')
+  popuptime.innerHTML = popuptimeHTML
+
+  videoContainer.addEventListener('touchmove', (e) => {
+    if (e.target.toString() == "[object HTMLVideoElement]") {
+      if(holdtouch == 1||  holdtouch2 == 1) {
+      } else {
+        var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+        var touch = evt.touches[0] || evt.changedTouches[0];
+        x = touch.pageX;
+        y = touch.pageY;
+        if(ismovingh == 0){
+          if(ismovingall == 0) {
+            if(x >= currentx + 35 || x <= currentx - 35) {
+              ismoving = 1
+            }
+            if(ismoving == 1) {
+              document.body.style.overflow = 'hidden'
+              videoContainer.appendChild(popuptime)
+              ptotalTime.textContent = FormatTime(video.duration)
+              pcureenttime.textContent = FormatTime(video.currentTime)
+              video.pause()
+              mViewUi()
+              ouchmovecheck = 1
+              clearInterval(mobiletimeout)
+              if(video.duration < 60) {
+                video.currentTime = currentvideotime + Math.floor(x - currentx) / 20
+              } else {
+                video.currentTime = currentvideotime + Math.floor(x - currentx) / 4
+              }
+              CurrentTime.textContent = FormatTime(video.currentTime)
+              const percent = video.currentTime / video.duration
+              TimeLineContaienr.style.setProperty("--progress-position", percent) 
+            }
+          }
+        }
+      }
+    }
+  })
+  videoContainer.addEventListener('touchstart', (e) => {
+    var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+    var touch = evt.touches[0] || evt.changedTouches[0];
+    x = touch.pageX;
+    y = touch.pageY;
+    const rect = videoContainer.getBoundingClientRect()
+    const percent = Math.min(Math.max(0,y - currenty), currenty) / currenty
+  })
+  videoContainer.addEventListener('touchmove', (e) => {
+    if (e.target.toString() == "[object HTMLVideoElement]") { 
+      var evt = (typeof e.originalEvent === 'undefined') ? e : e.originalEvent;
+      var touch = evt.touches[0] || evt.changedTouches[0];
+      x = touch.pageX;
+      y = touch.pageY;
+      const rect = videoContainer.getBoundingClientRect()
+      const percent = Math.min(Math.max(0,y - rect.y), rect.height) / rect.height
+      if(ismoving == 0 && ismovingall == 0) {
+        if(x <= video.clientWidth / 4) {
+          if(y >= currenty + 25 || y <= currenty - 25) {
+            ismovingh = 1
+          }
+          if(ismovingh == 1) {
+            document.body.style.overflow = 'hidden'
+            ShowVolumeText()
+            if(currentvideoVolume +  (currentpercent - percent) <= 1 && currentvideoVolume +  (currentpercent - percent) >= 0) {
+              video.volume = currentvideoVolume +  (currentpercent - percent)
+            } else {
+              if(video.volume > 0.98) {
+                video.volume = 1
+              } 
+              if(video.volume < 0.01) {
+                video.volume = 0
+              }
+            }
+          }
+        } 
+      }
+    }
+  })
+  videoContainer.addEventListener('touchend', (e) => {
+    if(ouchmovecheck == 1) {
+      ouchmovecheck = 0
+      ismoving = 0
+      popuptime.remove()
+      video.play()
+      mobiletimeout = setTimeout(() => {
+        mHideUi()
+      }, 2000);
+    }
+    holddivr.style.opacity = '0'
+    setTimeout(() => {
+      holddivr.remove()
+      document.body.style.overflow = 'auto'
+    }, 500);
+  })
+  videoContainer.addEventListener('touchmove' , (e) => {
+    clearTimeout(holdtouchtimeout)
+  })
+}
 
 // SKip
 
@@ -739,9 +1240,13 @@ settingsBtn.addEventListener('click', () => {
     OpenSettings()
     clearTimeout(tabtimeOut)
     clearTimeout(timeOut)
+    clearTimeout(mobiletimeout)
     ViewUi()
   } else {
     ClsoeSettings()
+    timeOut = setTimeout(() => {
+      mHideUi()
+    }, 2000);
   }
 })
 function OpenSettings() {
@@ -909,8 +1414,22 @@ window.onresize = previewimgSize
 previewimgSize()
 function previewimgSize() {
   previewimgContainer.style.aspectRatio = video.videoWidth / video.videoHeight
-  previewimgContainer.style.height = videoContainer.clientHeight / 5 + "px"
+  previewimgContainer.style.height = (videoContainer.clientHeight / 5) + 20 + "px"
 }
+
+window.addEventListener('load', mobile())
+
+function mobile() {
+  if (
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/iPhone/i)
+  ) {
+    MiniPlayerBtn.remove()
+    TheaterBtn.remove()
+    volumeSlider.remove()
+  }
+}
+
 
 
 //////////////////////

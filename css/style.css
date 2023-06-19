@@ -148,7 +148,7 @@ body {
   color: inherit;
   padding: 0;
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 0.95;
   transition: opacity 150ms ease-in-out;
   -webkit-transition: opacity 150ms ease-in-out;
   -moz-transition: opacity 150ms ease-in-out;

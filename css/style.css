@@ -967,3 +967,17 @@ body {
     position: relative;
   }
 }
+.file-name h3 {
+  color: white;
+  margin-bottom: 10px;
+  font-weight: 100;
+}
+#fileName {
+  background-color: white;
+  margin-inline: 10px;
+  max-width: 100%;
+  overflow: auto;
+  color: #006358;
+  padding: 10px;
+  margin-bottom: 10px;
+}

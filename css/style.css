@@ -14,7 +14,7 @@
   --max-video-width: calc((100vh  - 24px - 136px)*(var(--video-ratio-width)/var(--video-ratio-height)))
 }
 body {
-  background-color: #0e0e0e;
+  background-color: #0f0f0f;
   font-family: sans-serif;
   display: flex;
   flex-direction: column;

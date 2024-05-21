@@ -26,6 +26,7 @@ urluploadbtn.addEventListener("click", () => {
     video.play();
   }
 });
+const mainContainer = document.querySelector('.main-container')
 const rangeInputs = document.querySelectorAll('input[type="range"]');
 function handleInputChange(e) {
   let target = e.target;
@@ -479,7 +480,7 @@ function toggleFullScreen() {
       setTimeout(() => {
         previewimgSize();
       }, 50);
-      videoContainer.requestFullscreen();
+      mainContainer.requestFullscreen();
       if (
         video.videoWidth / video.videoHeight >= 0.4 &&
         video.videoWidth / video.videoHeight <= 1

@@ -20,7 +20,7 @@ inputch.onchange = (evt) => {
 urluploadbtn.addEventListener("click", () => {
   if (urlvalue.value.length == 0) {
   } else {
-    blah.src = `https://cors-anywhere.herokuapp.com/${urlvalue.value}`;
+    blah.src = urlvalue.value;
     blahh.src = urlvalue.value;
     urlvalue.value = "";
     video.play();

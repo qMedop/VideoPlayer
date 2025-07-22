@@ -1582,4 +1582,4 @@ function applyVisualEffects(video, canvas1, canvas2, updateSpeed) {
     animate();
   }
 }
-applyVisualEffects(video,canvas1,canvas2,2000)
+applyVisualEffects(video,canvas1,canvas2,500)
